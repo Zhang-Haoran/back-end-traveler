@@ -1,4 +1,4 @@
-const User = require("../../../models/user");
+const User = require('../../../models/user');
 //PUT one user
 exports.update = async (req, res) => {};
 
@@ -23,5 +23,5 @@ exports.show = async (req, res) => {};
 
 //GET all user
 exports.index = async (req, res) => {
-  return res.status(200).send("Success");
+  return res.status(200).send('Success');
 };
