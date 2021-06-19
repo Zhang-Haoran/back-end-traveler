@@ -8,5 +8,5 @@ module.exports = {
     prefix: process.env.API_PREFIX || '/api/v1',
   },
   mongoConnection:
-    'mongodb+srv://test:1234567890@cluster0.egj00.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    'mongodb+srv://besttraveller001:tseb12345@cluster0.0ksxn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
 };
