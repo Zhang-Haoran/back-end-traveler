@@ -1,3 +1,4 @@
+/* eslint-disable import/newline-after-import */
 const express = require("express");
 const router = new express.Router();
 const usersControllers = require("../../controllers/api/v1/users");
