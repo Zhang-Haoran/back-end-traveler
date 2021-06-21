@@ -1,12 +1,14 @@
+/* eslint-disable no-unused-vars */
 const User = require('../../../models/user');
-//PUT one user
+// PUT one user
 exports.update = async (req, res) => {};
 
-//DELETE one user
+// DELETE one user
 exports.destroy = async (req, res) => {};
 
-//POST one user
+// POST one user
 exports.store = async (req, res) => {
+  // eslint-disable-next-line no-console
   console.log(req.body);
   const user = new User(req.body);
 
@@ -18,10 +20,8 @@ exports.store = async (req, res) => {
   }
 };
 
-//GET one user
+// GET one user
 exports.show = async (req, res) => {};
 
-//GET all user
-exports.index = async (req, res) => {
-  return res.status(200).send('Success');
-};
+// GET all user
+exports.index = async (req, res) => res.status(200).send('Success');
