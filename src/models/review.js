@@ -12,7 +12,7 @@ const schema = new Schema(
       type: Number,
       required: true
     },
-    review: {
+    comment: {
       type: String,
       default: 'Tell us about your experience'
     }
