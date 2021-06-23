@@ -7,5 +7,6 @@ module.exports = async function () {
     useCreateIndex: true,
     useFindAndModify: false,
   });
+  console.log('connect to db');
   return connection.connection.db;
 };
