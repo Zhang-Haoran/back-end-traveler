@@ -12,7 +12,11 @@ const config = require("../config/app");
 //   return connection.connection.db;
 // };
 
-exports.connectToDB = () =>{
+exports.connectToDB = () => {
+  let database = process.env.DB_NAME;
+  if (process.env.NODE_ENV === 'test') {
+    database += '_test';
+  }
   const db = mongoose.connection;
   db.on("connected", () => {
       console.log("Connected");

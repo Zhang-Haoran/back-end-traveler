@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 const User = require('../../../models/user');
 const Joi = require('joi');
 
@@ -14,7 +13,7 @@ exports.update = async (req, res) => {
   if (!user){
       return res.sendStatus(404);
   }
-  return res.json(user);
+  return res.json(user).status(200);
 };
 
 // DELETE one user
