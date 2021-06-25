@@ -4,13 +4,18 @@ const moment = require('moment');
 
 // PUT one availability
 exports.update = async (req, res) => {
-  const {id} = req.params;
-  const {title, subtitle, introduction, highlights, included,
-     itinerary, price, startDate, endDate} = req.body;
-  const tour = await Tour.findByIdAndUpdate(id, 
-    {title, subtitle, introduction, highlights, included, itinerary, price, startDate, endDate}, 
-    {new: true}).exec();
-  if(!tour){
+  const { id } = req.params;
+  const { title, subtitle, introduction, highlights, included,
+    itinerary, price, startDate, endDate } = req.body;
+
+  if (moment(startDate, "DD/MM/YYYY").isAfter(moment(endDate, "DD/MM/YYYY"))) {
+    return res.status(400).send('End date should not be prior to the Start date');
+  }
+  
+  const tour = await Tour.findByIdAndUpdate(id,
+    { title, subtitle, introduction, highlights, included, itinerary, price, startDate, endDate },
+    { new: true }).exec();
+  if (!tour) {
     return res.sendStatus(404);
   }
   return res.status(200).json(tour);
@@ -18,9 +23,9 @@ exports.update = async (req, res) => {
 
 // DELETE one availability
 exports.destroy = async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const tour = await Tour.findByIdAndRemove(id).exec();
-  if(!tour){
+  if (!tour) {
     return res.sendStatus(404);
   }
   return res.status(204).json(tour);
@@ -31,10 +36,12 @@ exports.store = async (req, res) => {
   const { title, subtitle, introduction, highlights,
     included, itinerary, price, startDate, endDate } = req.body;
 
-  const tour = new Tour({ title, subtitle, 
-    introduction, highlights, included, itinerary, price, startDate, endDate });
+  const tour = new Tour({
+    title, subtitle,
+    introduction, highlights, included, itinerary, price, startDate, endDate
+  });
 
-  if(moment(startDate, "DD/MM/YYYY").isAfter(moment(endDate, "DD/MM/YYYY"))){
+  if (moment(startDate, "DD/MM/YYYY").isAfter(moment(endDate, "DD/MM/YYYY"))) {
     return res.status(400).send('End date should not be prior to the Start date');
   }
   try {
@@ -47,9 +54,9 @@ exports.store = async (req, res) => {
 
 // GET one availability
 exports.show = async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const tour = await Tour.findById(id).exec();
-  if(!tour){
+  if (!tour) {
     return res.sendStatus(404);
   }
   return res.json(tour);
@@ -63,7 +70,7 @@ exports.index = async (req, res) => {
 
 
 exports.addAvailabilityToTour = async (req, res) => {
-  const {availabilityId, tourId} = req.params;
+  const { availabilityId, tourId } = req.params;
   const availability = await Availability.findById(availabilityId).exec();
   const tour = await Tour.findById(tourId).exec();
   if (!availability || !tour) {
@@ -77,7 +84,7 @@ exports.addAvailabilityToTour = async (req, res) => {
 }
 
 exports.deleteAvailabilityFromTour = async (req, res) => {
-  const {availabilityId, tourId} = req.params;
+  const { availabilityId, tourId } = req.params;
   const availability = await Availability.findById(availabilityId).exec();
   const tour = await Tour.findById(tourId).exec();
   if (!availability || !tour) {
