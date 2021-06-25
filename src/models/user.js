@@ -29,25 +29,9 @@ const userSchema = new mongoose.Schema({
       minlength: 2,
       maxlength: 20
     },
-    // email: {
-    //   type: String,
-    //   required: [true, 'Please provide your email'],
-    //   unique: true,
-    //   lowercase: true,
-    //   index: true,
-    //   validate: {
-    //     validator:(email) => { 
-    //       return !Joi.string().email().validate(email).error; 
-    //     },
-    //     msg: 'Invalid email format'
-    //   }  
-    // },
     dateOfBirth:{
-      type: Date,
-      // required: [true, 'please tell us your date of birth'],
-      // validate:{
-
-      // }
+      type: String,
+      required: [true, 'please tell us your date of birth'],
     },
     role: {
       type: String,

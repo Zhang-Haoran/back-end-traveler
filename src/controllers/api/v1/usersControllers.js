@@ -35,7 +35,7 @@ exports.store = async (req, res) => {
     firstName: Joi.string().min(2).max(20).required(),
     lastName: Joi.string().min(2).max(20).required(),
     password: Joi.string().regex(/^[a-zA-Z0-9]+$/).required(),
-    // dateOfBirth: Joi.Date().required(),
+    dateOfBirth: Joi.string().required(),
     role: Joi.string().min(4).required()
   });
   // get data
