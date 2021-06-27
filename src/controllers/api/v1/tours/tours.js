@@ -8,11 +8,10 @@ exports.update = async (req, res) => {
   const { title, subtitle, introduction, highlights, included,
     itinerary, price, startDate, endDate } = req.body;
 
-  // Make sure the end date is later than the start date.
   if (moment(startDate, "DD/MM/YYYY").isAfter(moment(endDate, "DD/MM/YYYY"))) {
     return res.status(400).send('End date should not be prior to the Start date');
   }
-
+  
   const tour = await Tour.findByIdAndUpdate(id,
     { title, subtitle, introduction, highlights, included, itinerary, price, startDate, endDate },
     { new: true }).exec();
@@ -42,7 +41,6 @@ exports.store = async (req, res) => {
     introduction, highlights, included, itinerary, price, startDate, endDate
   });
 
-  // Make sure the end date is later than the start date.
   if (moment(startDate, "DD/MM/YYYY").isAfter(moment(endDate, "DD/MM/YYYY"))) {
     return res.status(400).send('End date should not be prior to the Start date');
   }
