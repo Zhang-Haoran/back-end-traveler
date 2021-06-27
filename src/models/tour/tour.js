@@ -76,10 +76,10 @@ const tourSchema = new Schema({
 
   // Here needs to check user collection
   // Relate to users
-  users: [{
+  bookings: [{
     type: Schema.Types.ObjectId,
-    ref: 'User'
-  }],// relate to users
+    ref: 'Booking'
+  }],// relate to booking
 })
 
 module.exports = model('Tour', tourSchema);
