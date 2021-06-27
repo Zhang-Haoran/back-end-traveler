@@ -61,6 +61,9 @@ const userSchema = new mongoose.Schema({
       default: true,
       select: false, // hidden from client
     },
+    bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],  
+    tours: [{ type: Schema.Types.ObjectId, ref: 'Tour' }],  
+    reviews:[{ type: Schema.Types.ObjectId, ref: 'Review' }], 
     __v:{
       type: Number,
       select: false
