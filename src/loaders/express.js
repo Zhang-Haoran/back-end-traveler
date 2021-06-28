@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const apiRouter = require("../../src/routes/v1/api");
-const bookingRouter = require("../../src/routes/v1/booking");
+const bookingRouter = require("../routes/v1/bookings");
 const config = require("../../src/config/app");
 
 

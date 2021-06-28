@@ -2,8 +2,6 @@ const supertest = require('supertest');
 // const app = require('../../loaders/express');
 const app = require('../../../app');
 const Booking = require('../../models/booking');
-const { connectToDB, disconnectDB } = require('../../loaders/mongoose');
-const { getBooking } = require('../../controllers/api/v1/bookings');
 
 // jest.useFakeTimers()
 
@@ -12,9 +10,6 @@ const request = supertest(app);
 
 // post
 it('should return 201 if request is valid',  async () => {
-    // serve 要和数据库先连接上
-    connectToDB();
-    // console.log("xxxxxxxxx");
     const res = await request 
         .post("/api/v1/bookings") 
         .send({user: "yang", tour: "sydney", price: 250}); // code: 77
@@ -26,7 +21,6 @@ it('should return 201 if request is valid',  async () => {
 })  
 // get all
 it('should return 200 if request is valid', async ()=>{
-    connectToDB();
     const res = await request
     .get("/api/v1/bookings")
     expect(res.body.data.data[5]).toHaveProperty("price");
@@ -39,14 +33,12 @@ it('should return 200 if request is valid', async ()=>{
 })
 // get by id 
 it('should return 200 if request is valid', async ()=>{
-    connectToDB();
     const res = await request
     .get("/api/v1/bookings/60d57b53c41beef9556623eb")
     expect(res.statusCode).toBe(200);
 })
 // put
 it('should return 200 if request is valid', async ()=>{
-    connectToDB();
     const res = await request
     .put("/api/v1/bookings/60d57b53c41beef9556623eb")
     .send({price: 300})
@@ -56,21 +48,10 @@ it('should return 200 if request is valid', async ()=>{
 
 // delete 
 it('should return 200 if request is valid', async ()=>{
-    connectToDB();
     const res = await request
     .delete("/api/v1/bookings/60d57fe5f28c6402f3ab177d")
     expect(res.statusCode).toBe(204);
 })
-
-
- describe('/bookings',()=>{
-  beforeAll(()=>{
-       connectToDB();
-         });
-  afterAll(async ()=>{
-        await disconnectDB();
-     });
-
 
  describe('POST', () => {
     const validBooking = {
@@ -96,7 +77,7 @@ it('should return 200 if request is valid', async ()=>{
         expect(booking.tour).toBe(validBooking.tour);
       });
 });
-})
+
 
 
 
