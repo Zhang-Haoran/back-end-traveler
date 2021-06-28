@@ -1,5 +1,4 @@
 const supertest = require('supertest');
-// const app = require('../../loaders/express');
 const app = require('../../../app');
 const Booking = require('../../models/booking');
 
