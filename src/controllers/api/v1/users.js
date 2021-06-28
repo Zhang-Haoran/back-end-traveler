@@ -1,27 +1,28 @@
-/* eslint-disable no-unused-vars */
+const Joi = require('joi');
 const User = require('../../../models/user');
-// PUT one user
-exports.update = async (req, res) => {};
-
-// DELETE one user
-exports.destroy = async (req, res) => {};
 
 // POST one user
 exports.store = async (req, res) => {
-  // eslint-disable-next-line no-console
-  console.log(req.body);
-  const user = new User(req.body);
+  const schema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string()
+      .regex(/^[a-zA-Z0-9]+$/)
+      .required(),
+  });
 
-  try {
-    await user.save();
-    res.status(201).send({ user });
-  } catch (e) {
-    res.status(400).send(e);
+  const { email, password } = await schema.validateAsync(req.body, {
+    allowUnknown: true,
+    stripUnknown: true,
+    abortEarly: false,
+  });
+
+  const existUser = await User.findById(email).exec();
+
+  if (existUser) {
+    return res.status(409).send('This email already exist');
   }
+
+  const user = new User({ _id: email, password });
+  await user.save();
+  return res.status(201).json(user);
 };
-
-// GET one user
-exports.show = async (req, res) => {};
-
-// GET all user
-exports.index = async (req, res) => res.status(200).send('Success');
