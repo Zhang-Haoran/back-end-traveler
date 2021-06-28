@@ -14,7 +14,11 @@ exports.update = async (req, res) => {
   
   const tour = await Tour.findByIdAndUpdate(id,
     { title, subtitle, introduction, highlights, included, itinerary, price, startDate, endDate },
-    { new: true }).exec();
+    {new: true, runValidators: true}, (err)=>{
+      if(err){
+        return res.status(422).json(err)
+      }
+  }).exec();
   if (!tour) {
     return res.sendStatus(404);
   }
