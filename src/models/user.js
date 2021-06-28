@@ -43,15 +43,10 @@ const userSchema = new mongoose.Schema({
       required: [true, 'Please provide a password'],
       minlength: 6,
       select: false, // don't send out passwords in responses
-      // validate: {
-      // }
     },
     // passwordConfirm is only required for input, not exist in DB
     passwordConfirm: {
       type: String,
-      // required: [true, 'Please confirm your password'],
-      // validate: {
-      // },
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
@@ -62,7 +57,6 @@ const userSchema = new mongoose.Schema({
       select: false, // hidden from client
     },
     bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],  
-    tours: [{ type: Schema.Types.ObjectId, ref: 'Tour' }],  
     reviews:[{ type: Schema.Types.ObjectId, ref: 'Review' }], 
     __v:{
       type: Number,

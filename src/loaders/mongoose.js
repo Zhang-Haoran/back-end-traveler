@@ -1,22 +1,7 @@
 const mongoose = require("mongoose");
 const config = require("../config/app");
 
-// module.exports = async function () {
-//   const connection = await mongoose.connect(config.mongoConnection, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     useCreateIndex: true,
-//     useFindAndModify: false,
-//   });
-//   console.log('connect to db');
-//   return connection.connection.db;
-// };
-
 exports.connectToDB = () => {
-  let database = process.env.DB_NAME;
-  if (process.env.NODE_ENV === 'test') {
-    database += '_test';
-  }
   const db = mongoose.connection;
   db.on("connected", () => {
       console.log("Connected");
@@ -27,7 +12,7 @@ exports.connectToDB = () => {
       process.exit(1);
   });
   db.on("disconnected", () => {
-      console.log("disconnected");
+      console.log("Disconnected");
   });
 }
 mongoose.connect(process.env.CONNECTION_STRING, {

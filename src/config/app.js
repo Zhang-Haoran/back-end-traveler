@@ -1,4 +1,5 @@
 require('express-async-errors');
+
 const dotenv = require('dotenv');
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const envFound = dotenv.config();
@@ -8,5 +9,6 @@ module.exports = {
   api: {
     prefix: process.env.API_PREFIX || '/api/v1',
   },
-  mongoConnection:'mongodb://localhost:27017/JR-P3',
+  // mongoConnection:'mongodb+srv://besttraveller001:tseb12345@cluster0.0ksxn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+  mongoConnection: process.env.CONNECTION_STRING,
 };
