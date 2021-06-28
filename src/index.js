@@ -1,9 +1,6 @@
 const config = require("./config/app");
 const app = require("../app");
 
-const { connectToDB } = require("../src/loaders/mongoose");
-connectToDB();
-
 async function startServer() {
   app.listen(config.port, (err) => {
     if (err) {

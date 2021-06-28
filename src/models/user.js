@@ -1,9 +1,7 @@
-const mongoose = require("mongoose");
 const {Schema, model } = require('mongoose');
 const Joi = require('joi');
 
-
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     _id: {
       type: String,
       alias: 'email',
@@ -70,7 +68,8 @@ const userSchema = new mongoose.Schema({
     },
     id: false
 });
-  
 
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+// const User = model("User", userSchema);
+// module.exports = User;
+// module.exports = model('User', userSchema);
+module.exports = model('User', userSchema);
