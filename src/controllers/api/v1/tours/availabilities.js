@@ -5,7 +5,12 @@ const Availability = require('../../../../models/tour/availability')
 exports.update = async (req, res) => {
   const {id} = req.params;
   const {date, stock} = req.body;
-  const availability = await Availability.findByIdAndUpdate(id, {date, stock}, {new: true}).exec();
+  const availability = await Availability.findByIdAndUpdate(id, {date, stock}, 
+    {new: true, runValidators: true}, (err)=>{
+      if(err){
+        return res.status(422).json(err)
+      }
+  }).exec();
   if(!availability){
     return res.sendStatus(404);
   }
