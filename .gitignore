@@ -48,4 +48,5 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
+# testing file
+bookings.test.js/

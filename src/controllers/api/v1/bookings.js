@@ -1,13 +1,11 @@
 const Booking = require('../../../models/booking');
 const User = require('../../../models/user');
 // const Tour = require('../../../models/tour');
-const Joi = require('joi');
 
 
-async function createBooking(req,res){
-  const {tour, user, paid, price} = req.body;
- 
-  const booking = new Booking({tour, user, paid, price})  // _id:code,
+async function store(req,res){
+  const { paid, price} = req.body;  
+  const booking = new Booking({ paid, price})  
   try {
     await booking.save();
     res.status(201).send({ booking });
@@ -16,7 +14,7 @@ async function createBooking(req,res){
   }
 }
 
-async function getBooking(req,res){
+async function show(req,res){
  const { id } = req.params;
  const booking = await Booking.findById(id).exec();
  if(!booking){
@@ -35,7 +33,7 @@ try{
 
 }
 
-async function getAllBookings(req,res){
+async function index(req,res){
    const bookings = await Booking.find().exec();
    try {
     res.status(200).json({
@@ -50,14 +48,14 @@ async function getAllBookings(req,res){
 }
 
 
-async function updateBooking(req,res){
+async function update(req,res){
     const{ id } = req.params;
-    const { tour, user, paid, price } = req.body;
+    const { paid, price } = req.body;
     const booking = await Booking.findByIdAndUpdate(
         id, 
-        { tour, user, paid, price},
+        { paid, price},
         { new: true }
-    );
+    ).exec();
     if (!booking){
         return res.sendStatus(404).json('No document found with that ID');
     }
@@ -73,9 +71,9 @@ async function updateBooking(req,res){
       }
 }
 
-async function deleteBooking(req,res){
+async function destroy(req,res){
    const  { id } = req.params;
-   const booking = await Booking.findByIdAndDelete(id);
+   const booking = await Booking.findByIdAndDelete(id).exec();
    if(!booking){
        return res.sendStatus(404).json('No document found with that ID');
    }
@@ -90,24 +88,12 @@ async function deleteBooking(req,res){
     res.status(400).send(e);
   }
 }
-// 看看这个user下面的booking tours
-// export async function getMyTours(req,res,next){
-//   // find all bookings
-//   const bookings = await Booking.find({user: req.user.id});
-//   // find tours with return ids
-//   const tourIDs = bookings.map(el=>el.tour);
-//   const tours = await Tour.find({_id: { $in: tourIDs }});
-//   res.status(200).render('overview',{
-//     title: 'My Tours',
-//     tours
-//   });
-// }
 
 module.exports = {
-    createBooking,
-    getBooking,
-    getAllBookings,
-    updateBooking,
-    deleteBooking
+    index,
+    show,
+    store,
+    update,
+    destroy,
   };
 
