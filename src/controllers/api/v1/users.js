@@ -17,9 +17,7 @@ exports.store = async (req, res) => {
 
   // check if user already exists
   const existUser = await User.findById(email).exec();
-  if (existUser) {
-    return res.status(409).send('This email already exist');
-  }
+  if (existUser) return res.status(409).send('This email already exist');
 
   // create user in database
   const user = new User({ _id: email, password });
