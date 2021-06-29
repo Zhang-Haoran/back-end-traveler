@@ -3,27 +3,19 @@ const Joi = require('joi');
 
 // PUT one user
 exports.update = async (req, res) => {
-  // validate by joi
-  const schema = Joi.object ({
-    email: Joi.string().email().required(),
-    firstName: Joi.string().min(2).max(20).required(),
-    lastName: Joi.string().min(2).max(20).required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]+$/).required(),
-    dateOfBirth: Joi.string().required(),
-    role: Joi.string().min(4).required()
-  });
   const {id} = req.params;
-  const {email, firstName, lastName, dateOfBirth, password, role} = req.body;
+  const {email, firstName, lastName, dateOfBirth, password, passwordConfirm, role} = req.body;
+  // get data
   const user = await User.findByIdAndUpdate(
       id, 
-      {email, firstName, lastName, dateOfBirth, password, role},
+      {email,firstName, lastName, dateOfBirth, password, passwordConfirm, role},
       {new: true}
   ).exec();
   if (!user){
       return res.status(404).send('No record found with that user');
   }
   try {
-    res.status(200).json(user);
+     res.status(200).json(user);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -46,28 +38,15 @@ exports.destroy = async (req, res) => {
 
 // POST one user
 exports.store = async (req, res) => {
-  // validate by joi
-  const schema = Joi.object ({
-    email: Joi.string().email().required(),
-    firstName: Joi.string().min(2).max(20).required(),
-    lastName: Joi.string().min(2).max(20).required(),
-    password: Joi.string().regex(/^[a-zA-Z0-9]+$/).required(),
-    dateOfBirth: Joi.string().required(),
-    role: Joi.string().min(4).required()
-  });
   // get data
-  const { email, firstName, lastName, dateOfBirth, password, role } = await schema.validateAsync(req.body, {
-    allowUnknown: true, 
-    stripUnknown: true, 
-    abortEarly: false 
-  });
+  const {email, firstName, lastName, dateOfBirth, password, passwordConfirm, role} = req.body;
   // check if user already exists 
   const existUser = await User.findById(email).exec();
   if(existUser) {
         return res.status(409).send('This email already exist'); 
   }
   // create user in database
-  const user = new User({_id:email, firstName, lastName, dateOfBirth, password, role});
+  const user = new User({_id:email, firstName, lastName, dateOfBirth, password, passwordConfirm, role});
   try {
     await user.save();
     res.status(201).send(user);

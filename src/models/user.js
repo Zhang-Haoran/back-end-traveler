@@ -10,19 +10,19 @@ const userSchema = new Schema({
         validator:(email) => { 
           return !Joi.string().email().validate(email).error; 
         },
-        msg: 'Invalid email format'
+        message: 'Invalid email format',
       }  
     },
     firstName: {
       type: String,
-      required: [true, 'Please tell us your name'],
+      required: [true, 'Please tell us your first name'],
       trim: true,
       minlength: 2,
       maxlength: 20
     },
     lastName: {
       type: String,
-      required: [true, 'Please tell us your name'],
+      required: [true, 'Please tell us your last name'],
       trim: true,
       minlength: 2,
       maxlength: 20
@@ -42,9 +42,16 @@ const userSchema = new Schema({
       minlength: 6,
       select: false, // don't send out passwords in responses
     },
-    // passwordConfirm is only required for input, not exist in DB
     passwordConfirm: {
       type: String,
+      required: [true, 'Please confirm your password'],
+      minlength: 6,
+      validate: {
+        validator: function (el) {
+          return el === this.password; 
+        },
+        message: 'Two passwords are not the same',
+      },
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
@@ -69,7 +76,4 @@ const userSchema = new Schema({
     id: false
 });
 
-// const User = model("User", userSchema);
-// module.exports = User;
-// module.exports = model('User', userSchema);
 module.exports = model('User', userSchema);
