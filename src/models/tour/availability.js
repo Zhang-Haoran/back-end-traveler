@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
-const moment = require('moment')
+const moment = require('moment');
+const Joi = require('joi');
 
 
 const availabilitySchema = new Schema({
@@ -16,6 +17,10 @@ const availabilitySchema = new Schema({
   stock: {
     type: Number,
     required: true,
+    validate: {
+      validator: (stock) => !Joi.number().integer().min(0).validate(stock).error,
+      msg: 'Number must be greater than 0 and integer',
+    }
   },
   tour: {
     type: Schema.Types.ObjectId,

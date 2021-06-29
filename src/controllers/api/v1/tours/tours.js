@@ -2,7 +2,7 @@ const Availability = require('../../../../models/tour/availability');
 const Tour = require('../../../../models/tour/tour');
 const moment = require('moment');
 
-// PUT one availability
+// PUT one tour
 exports.update = async (req, res) => {
   const { id } = req.params;
   const { title, subtitle, introduction, highlights, included,
@@ -25,7 +25,7 @@ exports.update = async (req, res) => {
   return res.status(200).json(tour);
 };
 
-// DELETE one availability
+// DELETE one tour
 exports.destroy = async (req, res) => {
   const { id } = req.params;
   const tour = await Tour.findByIdAndRemove(id).exec();
@@ -35,7 +35,7 @@ exports.destroy = async (req, res) => {
   return res.status(204).json(tour);
 };
 
-// POST one availability
+// POST one tour
 exports.store = async (req, res) => {
   const { title, subtitle, introduction, highlights,
     included, itinerary, price, startDate, endDate } = req.body;
@@ -56,7 +56,7 @@ exports.store = async (req, res) => {
   }
 };
 
-// GET one availability
+// GET one tour
 exports.show = async (req, res) => {
   const { id } = req.params;
   const tour = await Tour.findById(id).exec();
@@ -66,7 +66,7 @@ exports.show = async (req, res) => {
   return res.json(tour);
 };
 
-// GET all availability
+// GET all tours
 exports.index = async (req, res) => {
   const tour = await Tour.find().exec();
   return res.json(tour);

@@ -1,5 +1,6 @@
-const { Schema, model } = require('mongoose')
-const moment = require('moment')
+const { Schema, model } = require('mongoose');
+const moment = require('moment');
+const Joi = require('joi');
 
 const tourSchema = new Schema({
   // Here needs to check location collection
@@ -48,7 +49,12 @@ const tourSchema = new Schema({
 
   price: {
     type: Number,
-    required: true
+    required: true,
+    validate: {
+      validator: (price) => !Joi.number().precision(2).positive()
+      .validate(price,{convert:false}).error,
+      msg: 'Please input correct price',
+    }
   },
   // Check with front-end
   image: {
