@@ -16,7 +16,6 @@ const bookingSchema = new mongoose.Schema({
     // },
     price: {
         type: Number,
-        minimum: 0, 
         required: [true, 'Booking must have a price.'],
         validate: {
             validator: function(value) {
