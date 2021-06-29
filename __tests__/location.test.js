@@ -12,7 +12,7 @@ afterAll(async () => {
 
 const locationCreateTest = (city, cityConfirm, status) => {
   it('locationCreateTest is running...', async () => {
-    const res = await request.post('/createLocation')
+    const res = await request.post('/api/v1/location')
     .send({
       city: `${city}`
     });
@@ -29,7 +29,7 @@ const locationCreateTest = (city, cityConfirm, status) => {
 
 const locationGetTest = (id, status) => {
   it('locationGetTest is running...', async () => {
-    const res = await request.get(`/getLocation/${id}`)
+    const res = await request.get(`/api/v1/location/${id}`)
     
     // Search location in the database
     expect(res.statusCode).toBe(status)
@@ -38,7 +38,7 @@ const locationGetTest = (id, status) => {
 
 const locationUpdateTest = (id, cityUpdate, status) => {
   it('locationUpdateTest is running...', async () => {
-    const res = await request.patch(`/updateLocation/${id}`)
+    const res = await request.patch(`/api/v1/location/${id}`)
     .send({
       city: `${cityUpdate}`
     });
@@ -49,7 +49,7 @@ const locationUpdateTest = (id, cityUpdate, status) => {
 
 const locationDeleteTest = (id, status) => {
   it('locationDeleteTest is running...', async () => {
-    const res = await request.delete(`/deleteLocation/${id}`)
+    const res = await request.delete(`/api/v1/location/${id}`)
     const location = await Location.findById(id)
 
     // 204 No content
@@ -70,21 +70,20 @@ describe('Location CRUD Testing', () => {
     locationCreateTest('s ydney', 'sydney', 201)
   });
 
-  // City: brisbane
   describe('Should get the correct location if input id is valid', () => {
-    locationGetTest('60d885d1df48b339ef05a4bb', 201)
-    locationGetTest('60d885d1df48b339ef05a4b1', 404)
+    locationGetTest('60daf9f713dd1976af6a6b29', 201)
+    locationGetTest('60dae77b20f58f6bc3793c9a', 404)
+    locationGetTest('ewaewa', 500)
   });
 
-  // Origin city: brisbane
   describe('Should update location after found by id', () => {
-    locationUpdateTest('60d885d1df48b339ef05a4bb', 'brisbane', 201)
-    locationUpdateTest('60d934e380ce144a7817d721', 'canberra', 404)
+    locationUpdateTest('60daf4232ea1b1733aea7d80', 'tasmania', 201)
+    locationUpdateTest('60daf4232ea1b1313aea7d87', 'canberra', 404)
   });
 
   // Delete canberra
   describe('Should delete location after found by id', () => {
-    locationDeleteTest('60d940fc695402564ec41206', 204)
+    locationDeleteTest('60daf9fe13dd1976af6a6b2b', 204)
     locationDeleteTest('60d934e380ce144a7817d721', 404)
   });
 

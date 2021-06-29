@@ -14,20 +14,18 @@ const locationSchema = new mongoose.Schema(
 );
 
 // Delete space in word
-locationSchema.pre('save', function (next) {
-  this.city = this.city.replace(/ +/g, "")
-  next()
-})
-
-// Try to match city in database after input validation
-locationSchema.pre('save', function (next) {
+locationSchema.pre('save', async function (next) {
+  this.city = await this.city.replace(/ +/g, "")
+  // Try to match city in database after input validation
   for (let i = 0; i < city.length; i++ ) {
     if(this.city === city[i]) {
-      next()
+      return next()
     }
   }
   return next('City is not found') 
 })
+
+
 
 const Location = mongoose.model('location', locationSchema)
 
