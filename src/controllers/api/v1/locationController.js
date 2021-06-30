@@ -1,63 +1,6 @@
 const express = require('express');
 const Location = require('../../../models/location');
 
-// const locationController = express()
-
-// locationController.post('/createLocation', async (req, res) => {
-//   const { city } = req.body;
-//   const location = new Location({ city });
-//   const ret = await location.save();
-//   res.status(201).json(ret);
-// });
-
-// Location.get('/getLocation/:id', async (req, res) => {
-//   const id = req.params.id;
-//   const location = await Location.findById(id);
-//   if (!location) {
-//     res.status(404).json({
-//       message: 'location is not found'
-//     })
-//   } else {
-//     res.status(201).json({
-//       status: 'success',
-//       data: {
-//         location
-//       }
-//     })
-//   }
-// })
-
-// Location.patch('/updateLocation/:id', async (req, res) => {
-//   const id = req.params.id;
-//   const {city} = req.body;
-//   const location = await Location.findByIdAndUpdate(id, {city}, {
-//     new: true,
-//     runValidators: true,
-//   });
-//   if (!location) {
-//     res.status(404).json({
-//       message: 'location is not found'
-//     })
-//   } else {
-//     const ret = await location.save();
-//     res.status(201).json(ret);
-//   }
-// });
-
-// Location.delete('/deleteLocation/:id', async (req, res) => {
-//   const id = req.params.id;
-//   const location = await Location.findByIdAndDelete(id);
-//   if (!location) {
-//     res.status(404).json({
-//       message: 'location is not found'
-//     })
-//   } else {
-//     res.status(204).json({
-//       data: null,
-//     });
-//   }
-// });
-
 exports.getAllLocations = async (req, res, next) => {
   try {
     const locations = await Location.find()
