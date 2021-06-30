@@ -4,7 +4,6 @@ const Tour = require('../models/tour');
 const Joi = require('joi');
 
 async function getAllReviews(req, res) {
-  // db.collections.find()
   const reviews = await Review.find().exec();
   return res.json(reviews);
 }
@@ -39,7 +38,6 @@ async function deleteReviewById(req, res) {
     return res.sendStatus(404);
   }
 
-  // db.collections.updateMany()
   await User.updateMany(
     {
       reviews: review._id
@@ -63,7 +61,6 @@ async function deleteReviewById(req, res) {
   );
 
   return res.sendStatus(204);
-  // return res.json(course);
 }
 
 async function createReview(req, res) {

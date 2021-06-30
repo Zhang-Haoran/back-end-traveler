@@ -12,7 +12,7 @@ const schema = new Schema(
       type: Number,
       required: true,
       validate: {
-        validator:(rating)=> !Joi.integer().min(1).max(5).validate(rating).error,
+        validator:(rating)=> !Joi.number().integer().min(1).max(5).validate(rating).error,
         msg: 'Give a rating from 1-5', 
       }
     },
@@ -20,8 +20,8 @@ const schema = new Schema(
       type: String,
       default: 'Tell us about your experience',
       comment: {
-        validator: (price) => !Joi.string().alphanum().max(20).validate(comment).error,
-      msg: 'Words limit: 200 max',
+        validator: (price) => !Joi.string().alphanum().max(300).validate(comment).error,
+      msg: 'Words limit: 300 max',
       }
     }
   },
