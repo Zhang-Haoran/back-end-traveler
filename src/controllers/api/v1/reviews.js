@@ -7,10 +7,6 @@ async function getAllReviews(req, res) {
   // db.collections.find()
   const reviews = await Review.find().exec();
   return res.json(reviews);
-  // Course.findById().then().catch()
-  // Course.findById((error, data) => {
-  //
-  // })
 }
 
 async function getReviewById(req, res) {
@@ -29,7 +25,7 @@ async function updateReviewById(req, res) {
     id,
     { rating, comment },
     { new: true }
-  );
+  ).exec();
   if (!review) {
     return res.sendStatus(404);
   }
@@ -38,7 +34,7 @@ async function updateReviewById(req, res) {
 
 async function deleteReviewById(req, res) {
   const { id } = req.params;
-  const review = await Review.findByIdAndDelete(id);
+  const review = await Review.findByIdAndDelete(id).exec();
   if (!review) {
     return res.sendStatus(404);
   }
@@ -71,7 +67,6 @@ async function deleteReviewById(req, res) {
 }
 
 async function createReview(req, res) {
-  // const { code, name, description } = req.body;
   // validate data
   const numberValidator = Joi.number().min(1).max(5).required();
   const schema = Joi.object({

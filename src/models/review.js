@@ -10,25 +10,26 @@ const schema = new Schema(
     tour: [{ type: Schema.Types.ObjectId, ref: 'Tour' }],
     rating: {
       type: Number,
-      required: true
+      required: true,
+      validate: {
+        validator:(rating)=> !Joi.integer().min(1).max(5).validate(rating).error,
+        msg: 'Give a rating from 1-5', 
+      }
     },
     comment: {
       type: String,
-      default: 'Tell us about your experience'
+      default: 'Tell us about your experience',
+      comment: {
+        validator: (price) => !Joi.string().alphanum().max(20).validate(comment).error,
+      msg: 'Words limit: 200 max',
+      }
     }
   },
   {
     timestamps: true,
-    toJSON: {
-      virtuals: true
-    },
     id: false
   }
 );
-
-// schema.virtual('code').get(function () {
-//   return this._id;
-// });
 
 // Review -> Reviews
 module.exports = model('Review', schema);
