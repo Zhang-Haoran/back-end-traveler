@@ -1,14 +1,11 @@
-const Review = require('../models/review');
-const User = require('../models/user');
-const Tour = require('../models/tour');
-const Joi = require('joi');
+const Review = require('../../../models/review');
 
-async function getAllReviews(req, res) {
+async function index(req, res) {
   const reviews = await Review.find().exec();
   return res.json(reviews);
 }
 
-async function getReviewById(req, res) {
+async function show(req, res) {
   const { id } = req.params;
   const review = await Review.findById(id).populate('users').exec();
   if (!review) {
@@ -17,7 +14,7 @@ async function getReviewById(req, res) {
   return res.json(review);
 }
 
-async function updateReviewById(req, res) {
+async function update(req, res) {
   const { id } = req.params;
   const { rating, comment } = req.body;
   const review = await Review.findByIdAndUpdate(
@@ -31,7 +28,7 @@ async function updateReviewById(req, res) {
   return res.json(review);
 }
 
-async function deleteReviewById(req, res) {
+async function destroy(req, res) {
   const { id } = req.params;
   const review = await Review.findByIdAndDelete(id).exec();
   if (!review) {
@@ -63,7 +60,7 @@ async function deleteReviewById(req, res) {
   return res.sendStatus(204);
 }
 
-async function createReview(req, res) {
+async function store(req, res) {
   // validate data
   const numberValidator = Joi.number().min(1).max(5).required();
   const schema = Joi.object({
@@ -86,9 +83,9 @@ async function createReview(req, res) {
 }
 
 module.exports = {
-  getAllReviews,
-  getReviewById,
-  updateReviewById,
-  deleteReviewById,
-  createReview
+  index,
+  show,
+  destroy,
+  store,
+  update
 };

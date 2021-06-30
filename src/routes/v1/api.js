@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = new express.Router();
 const availabilityRoute = require("./tour/availabilities");
 const tourRoute = require("./tour/tours")
