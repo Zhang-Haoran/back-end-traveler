@@ -1,6 +1,10 @@
 const express = require('express');
-const {index, show, store, 
-  destroy, update} = require('../../../controllers/api/v1/tours/availabilities')
+const {
+  index, 
+  show, 
+  store, 
+  destroy, 
+  update} = require('../../../controllers/api/v1/tours/availabilities')
 
 const router = express.Router();
 
