@@ -1,13 +1,15 @@
 const Review = require('../../../models/review');
 
 async function index(req, res) {
-  const reviews = await Review.find().exec();
+  const reviews = await Review.find()
+  .populate('user').populate('tour').exec();
   return res.json(reviews);
 }
 
 async function show(req, res) {
   const { id } = req.params;
-  const review = await Review.findById(id).exec();
+  const review = await Review.findById(id)
+  .populate('user').populate('tour').exec();
   if (!review) {
     return res.sendStatus(404);
   }

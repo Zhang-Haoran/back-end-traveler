@@ -9,6 +9,8 @@ const {
   show,
   addBookingToUser,
   deleteBookingFromUser,
+  addReviewToUser,
+  deleteReviewFromUser
 } = require('../../controllers/api/v1/usersControllers');
 
 router.get('/', index);
@@ -19,5 +21,8 @@ router.get('/:id', show);
 
 router.post('/:userId/bookings/:bookingId', addBookingToUser)
 router.delete('/:userId/bookings/:bookingId', deleteBookingFromUser)
+
+router.post('/:userId/reviews/:reviewId', addReviewToUser)
+router.delete('/:userId/reviews/:reviewId', deleteReviewFromUser)
 
 module.exports = router;

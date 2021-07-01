@@ -42,7 +42,7 @@ exports.store = async (req, res) => {
 // GET one availability
 exports.show = async (req, res) => {
   const {id} = req.params;
-  const availability = await Availability.findById(id).exec();
+  const availability = await Availability.findById(id).populate('tour').exec();
   if(!availability){
     return res.sendStatus(404);
   }

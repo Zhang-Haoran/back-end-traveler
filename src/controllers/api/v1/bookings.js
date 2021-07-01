@@ -13,7 +13,8 @@ exports.store = async (req, res) => {
 
 exports.show = async (req, res) => {
   const { id } = req.params;
-  const booking = await Booking.findById(id).exec();
+  const booking = await Booking.findById(id)
+  .populate('tour').populate('user').exec();
   if (!booking) {
     return res.sendStatus(404).json('No document found with that ID');
   }
@@ -30,7 +31,8 @@ exports.show = async (req, res) => {
 }
 
 exports.index = async(req, res) => {
-  const bookings = await Booking.find().exec();
+  const bookings = await Booking.find()
+  .populate('tour').populate('user').exec();
   try {
     res.status(200).json({
       status: 'success',

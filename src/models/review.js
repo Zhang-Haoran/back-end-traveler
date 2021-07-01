@@ -3,7 +3,7 @@ const Joi = require('joi');
 
 const reviewSchema = new Schema(
   {
-    user: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    user: [{ type: Schema.Types.String, ref: 'User' }],
     tour: [{ type: Schema.Types.ObjectId, ref: 'Tour' }],
     rating: {
       type: Number,

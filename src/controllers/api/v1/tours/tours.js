@@ -2,6 +2,7 @@ const moment = require('moment');
 const Availability = require('../../../../models/tour/availability');
 const Tour = require('../../../../models/tour/tour');
 const Booking = require('../../../../models/booking');
+const Review = require('../../../../models/review');
 
 // PUT one tour
 exports.update = async (req, res) => {
@@ -60,7 +61,8 @@ exports.store = async (req, res) => {
 // GET one tour
 exports.show = async (req, res) => {
   const { id } = req.params;
-  const tour = await Tour.findById(id).exec();
+  const tour = await Tour.findById(id)
+  .populate('availability').populate('bookings').exec();
   if (!tour) {
     return res.sendStatus(404);
   }
@@ -69,7 +71,8 @@ exports.show = async (req, res) => {
 
 // GET all tours
 exports.index = async (req, res) => {
-  const tour = await Tour.find().exec();
+  const tour = await Tour.find()
+  .populate('availability').populate('bookings').exec();
   return res.json(tour);
 };
 
@@ -117,6 +120,34 @@ exports.addBookingToTour = async(req, res) => {
 }
 
 exports.deleteBookingFromTour = async(req, res) => {
+  const {tourId, bookingId} = req.params;
+  const tour = await Tour.findById(tourId).exec();
+  const booking = await Booking.findById(bookingId).exec();
+  if (!tour || !booking) {
+    return res.sendStatus(404);
+  }
+  tour.bookings.pull(booking._id);
+  booking.tour = null;
+  await booking.save();
+  await tour.save();
+  return res.status(200).json(booking);
+}
+
+exports.addReviewToTour = async(req, res) => {
+  const {tourId, reviewId} = req.params;
+  const tour = await Tour.findById(tourId).exec();
+  const booking = await Review.findById(reviewId).exec();
+  if (!tour || !booking) {
+    return res.sendStatus(404);
+  }
+  tour.bookings.addToSet(booking._id);
+  booking.tour = tour._id;
+  await booking.save();
+  await tour.save();
+  return res.status(200).json(booking);
+}
+
+exports.deleteReviewFromTour = async(req, res) => {
   const {tourId, bookingId} = req.params;
   const tour = await Tour.findById(tourId).exec();
   const booking = await Booking.findById(bookingId).exec();
