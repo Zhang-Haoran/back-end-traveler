@@ -6,8 +6,8 @@ const tourSchema = new Schema({
   // Here needs to check location collection
   // Relate to location
   city: {
-    type: String,
-    ref: 'City',
+    type: Schema.Types.String,
+    ref: 'Location',
   },
 
   title: {
@@ -97,15 +97,6 @@ const tourSchema = new Schema({
       ref: 'Booking',
     },
   ], // relate to booking
-  // Here needs to check location collection
-  // Relate to location
-  locations: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Location',
-      // required:true
-    },
-  ],
 });
 
 module.exports = model('Tour', tourSchema);

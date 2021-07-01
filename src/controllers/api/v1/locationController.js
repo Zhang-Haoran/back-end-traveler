@@ -105,11 +105,12 @@ exports.addTourToLocation = async (req, res) => {
   const {locationId, tourId } = req.params
   const tour = await Tour.findById(tourId).exec();
   const location = await Location.findById(locationId).exec();
+  console.log(location.city)
   if (!tour || !location) {
     return res.sendStatus(404);
   }
-  location.tours.addToSet(tour.id)
-  tour.locations.addToSet(location._id);
+  location.tours.addToSet(tour.title)
+  tour.city = location.city
   await tour.save();
   await location.save();
   return res.status(200).json(location);
@@ -122,8 +123,8 @@ exports.deleteTourFromLocation = async (req, res) => {
   if (!tour || !location) {
     return res.sendStatus(404);
   }
-  tour.locations.pull(location._id);
-  location.tours.pull(tour._id);
+  tour.locations.pull(location.city);
+  location.tours.pull(tour.city);
   await tour.save();
   await location.save();
   return res.status(200).json(location);

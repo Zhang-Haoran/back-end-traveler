@@ -11,7 +11,7 @@ const locationSchema = new Schema({
   },
   tours: [
     {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.String,
       ref: 'Tour'
     }
   ],

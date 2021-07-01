@@ -45,8 +45,8 @@ beforeAll(async () => {
 });
 // Disconnect database after test
 afterAll(async () => {
-  // await Location.deleteMany({});
-  // await Tour.deleteMany({});
+  await Location.deleteMany({});
+  await Tour.deleteMany({});
   await mongoose.disconnect();
 });
 
@@ -88,8 +88,8 @@ it('deleteTourFromLocationTest is running...', async () => {
     expect(res.statusCode).toBe(200)
 })
 
-// it('locationDeleteTest is running...', async () => {
-//   const res = await request.delete(`/api/v1/location/5c793331bc99fc1510b846b7`);
-//   // 204 No content
-//   expect(res.statusCode).toBe(204);
-// });
+it('locationDeleteTest is running...', async () => {
+  const res = await request.delete(`/api/v1/location/5c793331bc99fc1510b846b7`);
+  // 204 No content
+  expect(res.statusCode).toBe(204);
+});
