@@ -14,7 +14,6 @@
     // Does not enforce camelcase style for property names
     "camelcase": ["off"],
     "no-unused-vars": ["off"],
-    "no-underscore-dangle": ["off"],
     "max-len": ["error", { "code": 200 }],
     "prefer-destructuring": ["off"],
     "func-names": ["off"],
@@ -23,6 +22,8 @@
     "react/jsx-filename-extension": ["off"],
     "react/prop-types": ["warn"],
     "no-return-assign": ["off"],
-    "no-console": ["off"]
+    "no-console": ["off"],
+    "consistent-return": ["off"],
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }]
   }
 }
