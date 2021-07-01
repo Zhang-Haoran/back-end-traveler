@@ -6,7 +6,7 @@ const bookingSchema = new Schema({
     ref: 'Tour',
   },
   user: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.String,
     ref: 'User',
   },
   price: {

@@ -1,4 +1,5 @@
 const User = require('../../../models/user');
+const Booking = require('../../../models/booking');
 const { generateToken } = require('../../../utils/auth');
 
 // PUT one user
@@ -86,3 +87,31 @@ exports.index = async (req, res) => {
     res.status(400).send(e);
   }
 };
+
+exports.addBookingToUser = async(req, res) => {
+  const {userId, bookingId} = req.params;
+  const user = await User.findById(userId).exec();
+  const booking = await Booking.findById(bookingId).exec();
+  if (!user || !booking) {
+    return res.sendStatus(404);
+  }
+  user.bookings.addToSet(booking._id);
+  booking.user = user._id;
+  await booking.save();
+  await user.save();
+  return res.status(200).json(booking);
+}
+
+exports.deleteBookingFromUser = async(req, res) => {
+  const {userId, bookingId} = req.params;
+  const user = await User.findById(userId).exec();
+  const booking = await Booking.findById(bookingId).exec();
+  if (!user || !booking) {
+    return res.sendStatus(404);
+  }
+  user.bookings.pull(booking._id);
+  booking.user = null;
+  await booking.save();
+  await user.save();
+  return res.status(200).json(booking);
+}
