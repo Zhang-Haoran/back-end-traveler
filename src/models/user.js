@@ -42,14 +42,6 @@ const userSchema = new Schema(
       minlength: 6,
       select: false, // don't send out passwords in responses
     },
-    passwordChangedAt: Date,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
-    active: {
-      type: Boolean, // use to "delete" user accounts
-      default: true,
-      select: false, // hidden from client
-    },
     bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
     __v: {
