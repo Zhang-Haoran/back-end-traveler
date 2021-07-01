@@ -8,8 +8,7 @@ const userRoute = require('./users');
 const reviewRoute = require('./reviews');
 const locationRoute = require('./location');
 const authRoute = require('./auth');
-const bookingsRoute = require("./booking/bookings");
-
+const bookingsRoute = require('./booking/bookings');
 
 router.use('/auth', authRoute);
 router.use('/users', userRoute);
@@ -17,6 +16,5 @@ router.use('/tours', tourRoute);
 router.use('/availabilities', availabilityRoute);
 router.use('/reviews', reviewRoute);
 router.use('/bookings', bookingsRoute);
-router.use("/location", locationRoute);
+router.use('/location', locationRoute);
 module.exports = router;
-

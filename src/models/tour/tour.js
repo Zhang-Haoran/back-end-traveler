@@ -7,54 +7,62 @@ const tourSchema = new Schema({
   // Relate to location
   city: {
     type: String,
-    ref: 'City'
+    ref: 'City',
   },
 
   title: {
     type: String,
-    required: true
+    required: true,
   },
   subtitle: {
     type: String,
-    required: true
+    required: true,
   },
   introduction: {
     type: String,
-    required: true
+    required: true,
   },
 
   // Optional
-  highlights: [{
-    type: String
-  }],
+  highlights: [
+    {
+      type: String,
+    },
+  ],
   // Could create a new collection
-  included: [{
-    type: String,
-    required: true
-  }],
+  included: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   // Daily tour details
   // Could create a new collection
-  itinerary: [{
-    type: String,
-    required: true
-  }],
+  itinerary: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
 
   // Here needs to check availability collection
   // Relate to availability
-  availability: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Availability',
-    // required:true
-  }],
+  availability: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Availability',
+      // required:true
+    },
+  ],
 
   price: {
     type: Number,
     required: true,
     validate: {
-      validator: (price) => !Joi.number().precision(2).positive()
-      .validate(price,{convert:false}).error,
+      validator: (price) =>
+        !Joi.number().precision(2).positive().validate(price, { convert: false }).error,
       msg: 'Please input correct price',
-    }
+    },
   },
   // Check with front-end
   image: {
@@ -65,27 +73,31 @@ const tourSchema = new Schema({
     type: String,
     required: true,
     validate: {
-      validator: (date) => moment(date, "DD/MM/YYYY", true).isValid()
-      && moment(date, "DD/MM/YYYY").isSameOrAfter(moment()),
-      msg: 'Invalid Date Format'
+      validator: (date) =>
+        moment(date, 'DD/MM/YYYY', true).isValid() &&
+        moment(date, 'DD/MM/YYYY').isSameOrAfter(moment()),
+      msg: 'Invalid Date Format',
     },
   },
   endDate: {
     type: String,
     required: true,
     validate: {
-      validator: (date) => moment(date, "DD/MM/YYYY", true).isValid()
-      && moment(date, "DD/MM/YYYY").isSameOrAfter(moment()),
-      msg: 'Invalid Date Format'
+      validator: (date) =>
+        moment(date, 'DD/MM/YYYY', true).isValid() &&
+        moment(date, 'DD/MM/YYYY').isSameOrAfter(moment()),
+      msg: 'Invalid Date Format',
     },
   },
 
   // Here needs to check user collection
   // Relate to users
-  bookings: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Booking'
-  }],// relate to booking
-})
+  bookings: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Booking',
+    },
+  ], // relate to booking
+});
 
 module.exports = model('Tour', tourSchema);

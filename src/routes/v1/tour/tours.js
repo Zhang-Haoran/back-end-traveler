@@ -1,12 +1,13 @@
 const express = require('express');
 const {
-  index, 
-  show, 
-  store, 
-  destroy, 
-  update, 
-  addAvailabilityToTour, 
-  deleteAvailabilityFromTour} = require('../../../controllers/api/v1/tours/tours')
+  index,
+  show,
+  store,
+  destroy,
+  update,
+  addAvailabilityToTour,
+  deleteAvailabilityFromTour,
+} = require('../../../controllers/api/v1/tours/tours');
 
 const router = express.Router();
 
