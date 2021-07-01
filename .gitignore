@@ -3,9 +3,12 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+# env file
+.env
 # Node artifact files
 node_modules/
 dist/
+
 
 # Compiled Java class files
 *.class
@@ -15,7 +18,8 @@ dist/
 
 # Log files
 *.log
-
+# Environments files
+.env
 # Package files
 *.jar
 
@@ -47,4 +51,6 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+
+.env
 
