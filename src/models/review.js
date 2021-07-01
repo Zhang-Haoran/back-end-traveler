@@ -3,10 +3,6 @@ const Joi = require('joi');
 
 const reviewSchema = new Schema(
   {
-    _id: {
-      type: String,
-      uppercase: true,
-    },
     user: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     tour: [{ type: Schema.Types.ObjectId, ref: 'Tour' }],
     rating: {
@@ -19,6 +15,7 @@ const reviewSchema = new Schema(
     },
     comment: {
       type: String,
+      required: true,
       default: 'Tell us about your experience',
       comment: {
         validator: (price) => !Joi.string().alphanum().max(300).validate(price).error,
