@@ -1,11 +1,8 @@
 const { Schema, model } = require('mongoose');
+const Joi = require('joi');
 
-const schema = new Schema(
+const reviewSchema = new Schema(
   {
-    _id: {
-      type: String,
-      uppercase: true,
-    },
     user: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     tour: [{ type: Schema.Types.ObjectId, ref: 'Tour' }],
     rating: {
@@ -18,9 +15,10 @@ const schema = new Schema(
     },
     comment: {
       type: String,
+      required: true,
       default: 'Tell us about your experience',
       comment: {
-        validator: (price) => !Joi.string().alphanum().max(300).validate(comment).error,
+        validator: (price) => !Joi.string().alphanum().max(300).validate(price).error,
       msg: 'Words limit: 300 max',
       }
     }
@@ -31,5 +29,4 @@ const schema = new Schema(
   }
 );
 
-// Review -> Reviews
-module.exports = model('Review', schema);
+module.exports = model('Review', reviewSchema);

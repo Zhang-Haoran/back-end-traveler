@@ -1,29 +1,31 @@
-const Review = require('../models/review');
-const User = require('../models/user');
-const Tour = require('../models/tour');
-const Joi = require('joi');
+const Review = require('../../../models/review');
 
-async function getAllReviews(req, res) {
+async function index(req, res) {
   const reviews = await Review.find().exec();
   return res.json(reviews);
 }
 
-async function getReviewById(req, res) {
+async function show(req, res) {
   const { id } = req.params;
-  const review = await Review.findById(id).populate('users').exec();
+  const review = await Review.findById(id).exec();
   if (!review) {
     return res.sendStatus(404);
   }
   return res.json(review);
 }
 
-async function updateReviewById(req, res) {
+async function update(req, res) {
   const { id } = req.params;
   const { rating, comment } = req.body;
   const review = await Review.findByIdAndUpdate(
     id,
     { rating, comment },
-    { new: true }
+    { new: true, runValidators: true },
+    (err) => {
+      if (err) {
+        return res.status(422).json(err);
+      }
+    },
   ).exec();
   if (!review) {
     return res.sendStatus(404);
@@ -31,64 +33,30 @@ async function updateReviewById(req, res) {
   return res.json(review);
 }
 
-async function deleteReviewById(req, res) {
+async function destroy(req, res) {
   const { id } = req.params;
   const review = await Review.findByIdAndDelete(id).exec();
   if (!review) {
     return res.sendStatus(404);
   }
-
-  await User.updateMany(
-    {
-      reviews: review._id
-    },
-    {
-      $pull: {
-        reviews: review._id
-      }
-    }
-  );
-
-  await Tour.updateMany(
-    {
-      reviews: review._id
-    },
-    {
-      $pull: {
-        reviews: review._id
-      }
-    }
-  );
-
-  return res.sendStatus(204);
+  return res.status(204).send(review);
 }
 
-async function createReview(req, res) {
-  // validate data
-  const numberValidator = Joi.number().min(1).max(5).required();
-  const schema = Joi.object({
-    rating: numberValidator,
-    comment: Joi.string()
-  });
-  const {rating,comment} = await schema.validateAsync(req.body, {
-    allowUnknown: true,
-    stripUnknown: true,
-    abortEarly: false
-  });
-  const existReview = await Review.findById(code).exec();
-  if (existReview) {
-    // duplicate course code
-    return res.sendStatus(409);
+async function store(req, res) {
+  const { rating, comment } = req.body;
+  const review = new Review({ rating, comment });
+  try {
+    await review.save();
+    res.status(201).json(review);
+  } catch (e) {
+    res.status(400).send(e);
   }
-  const review = new Review({ _id, rating, comment });
-  await review.save();
-  return res.status(201).json(review);
 }
 
 module.exports = {
-  getAllReviews,
-  getReviewById,
-  updateReviewById,
-  deleteReviewById,
-  createReview
+  index,
+  show,
+  destroy,
+  store,
+  update,
 };
