@@ -18,7 +18,7 @@ const bookingSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Booking must have a price.'],
         validate: {
-            validator: function(value) {
+            validator(value) {
               return value > 0;
             },
             message: 'price need more than 0'

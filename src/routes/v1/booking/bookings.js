@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = new express.Router();
 const bookingsControllers = require("../../../controllers/api/v1/bookings");
 
