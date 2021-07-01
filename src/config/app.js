@@ -7,5 +7,6 @@ module.exports = {
   api: {
     prefix: process.env.API_PREFIX || '/api/v1',
   },
+
   mongoConnection: process.env.CONNECTION_STRING + process.env.DB_NAME,
 };

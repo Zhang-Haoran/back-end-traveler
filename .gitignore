@@ -8,7 +8,7 @@
 # Node artifact files
 node_modules/
 dist/
-.env
+
 
 # Compiled Java class files
 *.class
@@ -18,7 +18,8 @@ dist/
 
 # Log files
 *.log
-
+# Environments files
+.env
 # Package files
 *.jar
 
@@ -51,4 +52,3 @@ Thumbs.db
 *.mov
 *.wmv
 
-.env
