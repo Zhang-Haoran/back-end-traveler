@@ -74,8 +74,7 @@ const tourSchema = new Schema({
     required: true,
     validate: {
       validator: (date) =>
-        moment(date, 'DD/MM/YYYY', true).isValid() &&
-        moment(date, 'DD/MM/YYYY').isSameOrAfter(moment()),
+        moment(date, 'DD/MM/YYYY', true).isValid(),
       msg: 'Invalid Date Format',
     },
   },
@@ -98,6 +97,15 @@ const tourSchema = new Schema({
       ref: 'Booking',
     },
   ], // relate to booking
+  // Here needs to check location collection
+  // Relate to location
+  locations: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Location',
+      // required:true
+    },
+  ],
 });
 
 module.exports = model('Tour', tourSchema);

@@ -1,6 +1,6 @@
 const Booking = require('../../../models/booking');
 
-async function store(req, res) {
+exports.createBooking = async (req, res) => {
   const { paid, price } = req.body;
   const booking = new Booking({ paid, price });
   try {
@@ -11,7 +11,7 @@ async function store(req, res) {
   }
 }
 
-async function show(req, res) {
+exports.getBooking = async (req, res) => {
   const { id } = req.params;
   const booking = await Booking.findById(id).exec();
   if (!booking) {
@@ -29,7 +29,7 @@ async function show(req, res) {
   }
 }
 
-async function index(req, res) {
+exports.getAllBookings = async (req, res) => {
   const bookings = await Booking.find().exec();
   try {
     res.status(200).json({
@@ -43,7 +43,7 @@ async function index(req, res) {
   }
 }
 
-async function update(req, res) {
+exports.updateBooking = async (req, res) => {
   const { id } = req.params;
   const { paid, price } = req.body;
   const booking = await Booking.findByIdAndUpdate(id, { paid, price }, { new: true }).exec();
@@ -62,7 +62,7 @@ async function update(req, res) {
   }
 }
 
-async function destroy(req, res) {
+exports.deleteBookinig = async (req, res) => {
   const { id } = req.params;
   const booking = await Booking.findByIdAndDelete(id).exec();
   if (!booking) {
@@ -80,10 +80,3 @@ async function destroy(req, res) {
   }
 }
 
-module.exports = {
-  index,
-  show,
-  store,
-  update,
-  destroy,
-};

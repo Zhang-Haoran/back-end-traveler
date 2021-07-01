@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const { Schema , model } = require('mongoose');
 const city = require('../city');
 
-const locationSchema = new mongoose.Schema({
+const locationSchema = new Schema({
   city: {
     type: String,
     required: [true, 'You must enter a valid city name'],
@@ -9,6 +9,12 @@ const locationSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  tours: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Tour'
+    }
+  ],
 });
 
 // Delete space in word
@@ -23,6 +29,4 @@ locationSchema.pre('save', async function (next) {
   return next('City is not found');
 });
 
-const Location = mongoose.model('location', locationSchema);
-
-module.exports = Location;
+module.exports = model('Location', locationSchema);

@@ -42,6 +42,7 @@ it('should return 200 if request is valid', async () => {
   const res = await request.get('/api/v1/users');
   expect(res.statusCode).toBe(200);
 });
+
 // get user by id(email)
 it('should return 200 if get user by id', async () => {
   const res = await request.get('/api/v1/users/fancy@test.com');

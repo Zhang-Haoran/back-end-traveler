@@ -1,4 +1,21 @@
 const Location = require('../../../models/location');
+const Tour = require('../../../models/tour/tour')
+
+exports.createLocation = async (req, res) => {
+  try {
+    const newLocation = await Location.create(req.body);
+    res.status(201).json({
+      status: 'success',
+      data: {
+        location: newLocation,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: 'Error occured',
+    });
+  }
+};
 
 exports.getAllLocations = async (req, res) => {
   try {
@@ -38,22 +55,6 @@ exports.getLocation = async function (req, res, next) {
     });
   }
   return next();
-};
-
-exports.createLocation = async (req, res) => {
-  try {
-    const newLocation = await Location.create(req.body);
-    res.status(201).json({
-      status: 'success',
-      data: {
-        location: newLocation,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: 'Error occured',
-    });
-  }
 };
 
 exports.updateLocation = async function (req, res, next) {
@@ -99,3 +100,31 @@ exports.deleteLocation = async function (req, res, next) {
   });
   return next();
 };
+
+exports.addTourToLocation = async (req, res) => {
+  const {locationId, tourId } = req.params
+  const tour = await Tour.findById(tourId).exec();
+  const location = await Location.findById(locationId).exec();
+  if (!tour || !location) {
+    return res.sendStatus(404);
+  }
+  location.tours.addToSet(tour.id)
+  tour.locations.addToSet(location._id);
+  await tour.save();
+  await location.save();
+  return res.status(200).json(location);
+}
+
+exports.deleteTourFromLocation = async (req, res) => {
+  const {locationId, tourId } = req.params
+  const tour = await Tour.findById(tourId).exec();
+  const location = await Location.findById(locationId).exec();
+  if (!tour || !location) {
+    return res.sendStatus(404);
+  }
+  tour.locations.pull(location._id);
+  location.tours.pull(tour._id);
+  await tour.save();
+  await location.save();
+  return res.status(200).json(location);
+}

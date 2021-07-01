@@ -3,7 +3,7 @@ const Availability = require('../../../../models/tour/availability');
 const Tour = require('../../../../models/tour/tour');
 
 // PUT one tour
-exports.update = async (req, res) => {
+exports.updateTour = async (req, res) => {
   const { id } = req.params;
   const { title, subtitle, introduction, highlights, included,
     itinerary, price, startDate, endDate } = req.body;
@@ -11,7 +11,7 @@ exports.update = async (req, res) => {
   if (moment(startDate, "DD/MM/YYYY").isAfter(moment(endDate, "DD/MM/YYYY"))) {
     return res.status(400).send('End date should not be prior to the Start date');
   }
-  
+
   const tour = await Tour.findByIdAndUpdate(id,
     { title, subtitle, introduction, highlights, included, itinerary, price, startDate, endDate },
     {new: true, runValidators: true}, (err)=>{
@@ -26,7 +26,7 @@ exports.update = async (req, res) => {
 };
 
 // DELETE one tour
-exports.destroy = async (req, res) => {
+exports.deleteTour = async (req, res) => {
   const { id } = req.params;
   const tour = await Tour.findByIdAndRemove(id).exec();
   if (!tour) {
@@ -36,7 +36,7 @@ exports.destroy = async (req, res) => {
 };
 
 // POST one tour
-exports.store = async (req, res) => {
+exports.createTour = async (req, res) => {
   const { title, subtitle, introduction, highlights,
     included, itinerary, price, startDate, endDate } = req.body;
 
@@ -57,7 +57,7 @@ exports.store = async (req, res) => {
 };
 
 // GET one tour
-exports.show = async (req, res) => {
+exports.getTour = async (req, res) => {
   const { id } = req.params;
   const tour = await Tour.findById(id).exec();
   if (!tour) {
@@ -67,7 +67,7 @@ exports.show = async (req, res) => {
 };
 
 // GET all tours
-exports.index = async (req, res) => {
+exports.getAllTours = async (req, res) => {
   const tour = await Tour.find().exec();
   return res.json(tour);
 };
@@ -100,4 +100,5 @@ exports.deleteAvailabilityFromTour = async (req, res) => {
   await tour.save();
   return res.status(200).json(tour);
 }
+
 // city, title, subtitle, introduction, highlights, included, itinerary, price, startDate, endDate

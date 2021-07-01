@@ -1,11 +1,22 @@
 const Review = require('../../../models/review');
 
-async function index(req, res) {
+exports.createReview = async (req, res) => {
+  const { rating, comment } = req.body;
+  const review = new Review({ rating, comment });
+  try {
+    await review.save();
+    res.status(201).json(review);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+}
+
+exports.getAllReviews = async (req, res) => {
   const reviews = await Review.find().exec();
   return res.json(reviews);
 }
 
-async function show(req, res) {
+exports.getReview = async (req, res) => {
   const { id } = req.params;
   const review = await Review.findById(id).exec();
   if (!review) {
@@ -14,7 +25,7 @@ async function show(req, res) {
   return res.json(review);
 }
 
-async function update(req, res) {
+exports.updateReview = async (req, res) => {
   const { id } = req.params;
   const { rating, comment } = req.body;
   const review = await Review.findByIdAndUpdate(
@@ -33,7 +44,7 @@ async function update(req, res) {
   return res.json(review);
 }
 
-async function destroy(req, res) {
+exports.deleteReview = async (req, res) => {
   const { id } = req.params;
   const review = await Review.findByIdAndDelete(id).exec();
   if (!review) {
@@ -41,22 +52,3 @@ async function destroy(req, res) {
   }
   return res.status(204).send(review);
 }
-
-async function store(req, res) {
-  const { rating, comment } = req.body;
-  const review = new Review({ rating, comment });
-  try {
-    await review.save();
-    res.status(201).json(review);
-  } catch (e) {
-    res.status(400).send(e);
-  }
-}
-
-module.exports = {
-  index,
-  show,
-  destroy,
-  store,
-  update,
-};
