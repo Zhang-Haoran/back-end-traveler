@@ -1,6 +1,6 @@
+const moment = require('moment');
 const Availability = require('../../../../models/tour/availability');
 const Tour = require('../../../../models/tour/tour');
-const moment = require('moment');
 
 // PUT one tour
 exports.update = async (req, res) => {
