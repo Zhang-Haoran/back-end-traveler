@@ -5,11 +5,6 @@ const app = require('../../../app');
 const request = supertest(app);
 const Location = require('../../models/location');
 
-// Disconnect database after test
-afterAll(async () => {
-  await mongoose.disconnect();
-});
-
 const locationCreateTest = (city, cityConfirm, status) => {
   it('locationCreateTest is running...', async () => {
     const res = await request.post('/api/v1/location').send({
@@ -54,6 +49,18 @@ const locationDeleteTest = (id, status) => {
 };
 
 describe('Location CRUD Testing', () => {
+  beforeAll(async () => {
+    await Location.deleteMany({});
+    const location = new Location({
+      _id: mongoose.Types.ObjectId('5c793331bc99fc1510b846b7'),
+      city: 'perth',
+    });
+    await location.save();
+  });
+  // Disconnect database after test
+  afterAll(async () => {
+    await mongoose.disconnect();
+  });
   describe('Should create new location and save to database after input validation', () => {
     locationCreateTest('sydney', 'sydney', 201);
     locationCreateTest('Sydney', 'sydney', 201);
@@ -66,19 +73,19 @@ describe('Location CRUD Testing', () => {
   });
 
   describe('Should get the correct location if input id is valid', () => {
-    locationGetTest('60daf9f713dd1976af6a6b29', 201);
+    locationGetTest('5c793331bc99fc1510b846b7', 201);
     locationGetTest('60dae77b20f58f6bc3793c9a', 404);
     locationGetTest('ewaewa', 500);
   });
 
   describe('Should update location after found by id', () => {
-    locationUpdateTest('60daf4232ea1b1733aea7d80', 'tasmania', 201);
+    locationUpdateTest('5c793331bc99fc1510b846b7', 'tasmania', 201);
     locationUpdateTest('60daf4232ea1b1313aea7d87', 'canberra', 404);
   });
 
   // Delete canberra
   describe('Should delete location after found by id', () => {
-    locationDeleteTest('60daf9fe13dd1976af6a6b2b', 204);
+    locationDeleteTest('5c793331bc99fc1510b846b7', 204);
     locationDeleteTest('60d934e380ce144a7817d721', 404);
   });
 });
