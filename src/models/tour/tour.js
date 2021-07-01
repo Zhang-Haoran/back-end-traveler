@@ -89,9 +89,6 @@ const tourSchema = new Schema({
       msg: 'Invalid Date Format',
     },
   },
-
-  // Here needs to check user collection
-  // Relate to users
   bookings: [
     {
       type: Schema.Types.ObjectId,

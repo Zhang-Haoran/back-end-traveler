@@ -1,6 +1,7 @@
 const moment = require('moment');
 const Availability = require('../../../../models/tour/availability');
 const Tour = require('../../../../models/tour/tour');
+const Booking = require('../../../../models/booking');
 
 // PUT one tour
 exports.update = async (req, res) => {
@@ -100,4 +101,31 @@ exports.deleteAvailabilityFromTour = async (req, res) => {
   await tour.save();
   return res.status(200).json(tour);
 }
-// city, title, subtitle, introduction, highlights, included, itinerary, price, startDate, endDate
+
+exports.addBookingToTour = async(req, res) => {
+  const {tourId, bookingId} = req.params;
+  const tour = await Tour.findById(tourId).exec();
+  const booking = await Booking.findById(bookingId).exec();
+  if (!tour || !booking) {
+    return res.sendStatus(404);
+  }
+  tour.bookings.addToSet(booking._id);
+  booking.tour = tour._id;
+  await booking.save();
+  await tour.save();
+  return res.status(200).json(booking);
+}
+
+exports.deleteBookingFromTour = async(req, res) => {
+  const {tourId, bookingId} = req.params;
+  const tour = await Tour.findById(tourId).exec();
+  const booking = await Booking.findById(bookingId).exec();
+  if (!tour || !booking) {
+    return res.sendStatus(404);
+  }
+  tour.bookings.pull(booking._id);
+  booking.tour = null;
+  await booking.save();
+  await tour.save();
+  return res.status(200).json(booking);
+}
