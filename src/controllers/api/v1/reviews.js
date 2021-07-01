@@ -20,11 +20,13 @@ async function update(req, res) {
   const review = await Review.findByIdAndUpdate(
     id,
     { rating, comment },
-    { new: true, runValidators: true }, (err) => {
-      if(err){
-        return res.status(422).json(err)
+    { new: true, runValidators: true },
+    (err) => {
+      if (err) {
+        return res.status(422).json(err);
       }
-  }).exec();
+    },
+  ).exec();
   if (!review) {
     return res.sendStatus(404);
   }
@@ -41,7 +43,7 @@ async function destroy(req, res) {
 }
 
 async function store(req, res) {
-  const {rating,comment} = req.body;
+  const { rating, comment } = req.body;
   const review = new Review({ rating, comment });
   try {
     await review.save();
@@ -56,5 +58,5 @@ module.exports = {
   show,
   destroy,
   store,
-  update
+  update,
 };

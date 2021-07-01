@@ -1,12 +1,14 @@
-const express = require("express");
+const express = require('express');
 
 const router = new express.Router();
-const availabilityRoute = require("./tour/availabilities");
-const tourRoute = require("./tour/tours")
-const userRoute = require("./users")
-const reviewRoute = require("./reviews")
+const availabilityRoute = require('./tour/availabilities');
+const tourRoute = require('./tour/tours');
+const userRoute = require('./users');
+const reviewRoute = require('./reviews');
+const authRoute = require('./auth');
 
-router.use('/users',userRoute);
+router.use('/auth', authRoute);
+router.use('/users', userRoute);
 router.use('/tours', tourRoute);
 router.use('/availabilities', availabilityRoute);
 router.use('/reviews', reviewRoute);

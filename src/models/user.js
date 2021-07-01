@@ -1,33 +1,33 @@
-const {Schema, model } = require('mongoose');
+const { Schema, model } = require('mongoose');
 const Joi = require('joi');
+const bcrypt = require('bcryptjs');
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
     _id: {
       type: String,
       alias: 'email',
       lowercase: true,
       validate: {
-        validator:(email) => { 
-          return !Joi.string().email().validate(email).error; 
-        },
+        validator: (email) => !Joi.string().email().validate(email).error,
         message: 'Invalid email format',
-      }  
+      },
     },
     firstName: {
       type: String,
       required: [true, 'Please tell us your first name'],
       trim: true,
       minlength: 2,
-      maxlength: 20
+      maxlength: 20,
     },
     lastName: {
       type: String,
       required: [true, 'Please tell us your last name'],
       trim: true,
       minlength: 2,
-      maxlength: 20
+      maxlength: 20,
     },
-    dateOfBirth:{
+    dateOfBirth: {
       type: String,
       required: [true, 'please tell us your date of birth'],
     },
@@ -42,17 +42,6 @@ const userSchema = new Schema({
       minlength: 6,
       select: false, // don't send out passwords in responses
     },
-    passwordConfirm: {
-      type: String,
-      required: [true, 'Please confirm your password'],
-      minlength: 6,
-      validate: {
-        validator: function (el) {
-          return el === this.password; 
-        },
-        message: 'Two passwords are not the same',
-      },
-    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -61,19 +50,27 @@ const userSchema = new Schema({
       default: true,
       select: false, // hidden from client
     },
-    bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],  
-    reviews:[{ type: Schema.Types.ObjectId, ref: 'Review' }], 
-    __v:{
+    bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],
+    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
+    __v: {
       type: Number,
-      select: false
-    }
+      select: false,
+    },
   },
   {
     timestamps: true,
-    toJSON:{
-        virtuals : true
+    toJSON: {
+      virtuals: true,
     },
-    id: false
-});
+    id: false,
+  },
+);
+userSchema.methods.hashPassword = async function () {
+  this.password = await bcrypt.hash(this.password, 12);
+};
+
+userSchema.methods.validatePassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
 
 module.exports = model('User', userSchema);
