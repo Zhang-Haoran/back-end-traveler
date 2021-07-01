@@ -1,21 +1,21 @@
 const User = require('../../../models/user');
-const Joi = require('joi');
+const { generateToken } = require('../../../utils/auth');
 
 // PUT one user
 exports.update = async (req, res) => {
-  const {id} = req.params;
-  const {email, firstName, lastName, dateOfBirth, password, passwordConfirm, role} = req.body;
+  const { id } = req.params;
+  const { email, firstName, lastName, dateOfBirth, password, role } = req.body;
   // get data
   const user = await User.findByIdAndUpdate(
-      id, 
-      {email,firstName, lastName, dateOfBirth, password, passwordConfirm, role},
-      {new: true}
+    id,
+    { email, firstName, lastName, dateOfBirth, password, role },
+    { new: true },
   ).exec();
-  if (!user){
-      return res.status(404).send('No record found with that user');
+  if (!user) {
+    return res.status(404).send('No record found with that user');
   }
   try {
-     res.status(200).json(user);
+    res.status(200).json(user);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -25,13 +25,12 @@ exports.update = async (req, res) => {
 exports.destroy = async (req, res) => {
   const { id } = req.params;
   const user = await User.findByIdAndDelete(id).exec();
-  if (!user){
+  if (!user) {
     return res.status(404).send('No record found with that user');
   }
   try {
-     return res.sendStatus(204); 
-  }
-  catch (e) {
+    return res.sendStatus(204);
+  } catch (e) {
     res.status(400).send(e);
   }
 };
@@ -39,17 +38,26 @@ exports.destroy = async (req, res) => {
 // POST one user
 exports.store = async (req, res) => {
   // get data
-  const {email, firstName, lastName, dateOfBirth, password, passwordConfirm, role} = req.body;
-  // check if user already exists 
+  const { email, firstName, lastName, dateOfBirth, password, role } = req.body;
+  // check if user already exists
   const existUser = await User.findById(email).exec();
-  if(existUser) {
-        return res.status(409).send('This email already exist'); 
+  if (existUser) {
+    return res.status(409).send('This email already exist');
   }
   // create user in database
-  const user = new User({_id:email, firstName, lastName, dateOfBirth, password, passwordConfirm, role});
+  const user = new User({
+    _id: email,
+    firstName,
+    lastName,
+    dateOfBirth,
+    password,
+    role,
+  });
+  await user.hashPassword();
   try {
     await user.save();
-    res.status(201).send(user);
+    const token = generateToken({ email });
+    res.status(201).send({ token, email });
   } catch (e) {
     res.status(400).send(e);
   }
@@ -57,14 +65,14 @@ exports.store = async (req, res) => {
 
 // GET one user
 exports.show = async (req, res) => {
-  const {id} = req.params;
-  const user = await User.findById(id).exec(); 
-  if(!user) {
-      return res.status(404).send('No record found with that user');
+  const { id } = req.params;
+  const user = await User.findById(id).exec();
+  if (!user) {
+    return res.status(404).send('No record found with that user');
   }
-  try{
+  try {
     return res.status(200).json(user);
-  } catch(e){
+  } catch (e) {
     res.status(400).send(e);
   }
 };

@@ -1,14 +1,20 @@
 const supertest = require('supertest');
 const mongoose = require('mongoose');
-const app = require('../../app');
-const User = require('../models/user');
+const app = require('../../../app');
+const User = require('../../models/user');
 
 // Auth router
 describe('/api/v1/auth', () => {
   // Setup testing & adding default test user
   beforeAll(async () => {
     await User.deleteMany({});
-    const user = new User({ email: 'test@gmail.com', password: '123456789' });
+    const user = new User({
+      email: 'test@gmail.com',
+      password: '123456789',
+      firstName: 'Haoran',
+      lastName: 'Zhang',
+      dateOfBirth: '01/07/2021',
+    });
     await user.hashPassword();
     await user.save();
   });
