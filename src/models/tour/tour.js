@@ -94,7 +94,13 @@ const tourSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Booking',
     },
-  ], // relate to booking
+  ],
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Review',
+    },
+  ],
 });
 
 module.exports = model('Tour', tourSchema);

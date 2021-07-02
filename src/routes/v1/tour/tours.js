@@ -8,7 +8,9 @@ const {
   addAvailabilityToTour,
   deleteAvailabilityFromTour,
   addBookingToTour,
-  deleteBookingFromTour
+  deleteBookingFromTour,
+  addReviewToTour,
+  deleteReviewFromTour
 } = require('../../../controllers/api/v1/tours/tours');
 
 const router = express.Router();
@@ -24,5 +26,8 @@ router.delete('/:tourId/availabilities/:availabilityId', deleteAvailabilityFromT
 
 router.post('/:tourId/bookings/:bookingId', addBookingToTour);
 router.delete('/:tourId/bookings/:bookingId', deleteBookingFromTour);
+
+router.post('/:tourId/reviews/:reviewId', addReviewToTour);
+router.delete('/:tourId/reviews/:reviewId', deleteReviewFromTour);
 
 module.exports = router;

@@ -62,7 +62,8 @@ exports.store = async (req, res) => {
 exports.show = async (req, res) => {
   const { id } = req.params;
   const tour = await Tour.findById(id)
-  .populate('availability').populate('bookings').exec();
+  .populate('availability').populate('bookings')
+  .populate('reviews').populate('city').exec();
   if (!tour) {
     return res.sendStatus(404);
   }
@@ -72,7 +73,8 @@ exports.show = async (req, res) => {
 // GET all tours
 exports.index = async (req, res) => {
   const tour = await Tour.find()
-  .populate('availability').populate('bookings').exec();
+  .populate('availability').populate('bookings')
+  .populate('reviews').populate('city').exec();
   return res.json(tour);
 };
 
@@ -116,7 +118,7 @@ exports.addBookingToTour = async(req, res) => {
   booking.tour = tour._id;
   await booking.save();
   await tour.save();
-  return res.status(200).json(booking);
+  return res.status(200).json(tour);
 }
 
 exports.deleteBookingFromTour = async(req, res) => {
@@ -130,33 +132,33 @@ exports.deleteBookingFromTour = async(req, res) => {
   booking.tour = null;
   await booking.save();
   await tour.save();
-  return res.status(200).json(booking);
+  return res.status(200).json(tour);
 }
 
 exports.addReviewToTour = async(req, res) => {
   const {tourId, reviewId} = req.params;
   const tour = await Tour.findById(tourId).exec();
-  const booking = await Review.findById(reviewId).exec();
-  if (!tour || !booking) {
+  const review = await Review.findById(reviewId).exec();
+  if (!tour || !review) {
     return res.sendStatus(404);
   }
-  tour.bookings.addToSet(booking._id);
-  booking.tour = tour._id;
-  await booking.save();
+  tour.reviews.addToSet(review._id);
+  review.tour.addToSet(tour._id);
+  await review.save();
   await tour.save();
-  return res.status(200).json(booking);
+  return res.status(200).json(tour);
 }
 
 exports.deleteReviewFromTour = async(req, res) => {
-  const {tourId, bookingId} = req.params;
+  const {tourId, reviewId} = req.params;
   const tour = await Tour.findById(tourId).exec();
-  const booking = await Booking.findById(bookingId).exec();
-  if (!tour || !booking) {
+  const review = await Review.findById(reviewId).exec();
+  if (!tour || !review) {
     return res.sendStatus(404);
   }
-  tour.bookings.pull(booking._id);
-  booking.tour = null;
-  await booking.save();
+  tour.reviews.pull(review._id);
+  review.tour.pull(tour._id);
+  await review.save();
   await tour.save();
-  return res.status(200).json(booking);
+  return res.status(200).json(tour);
 }

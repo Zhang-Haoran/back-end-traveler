@@ -113,7 +113,7 @@ exports.deleteBookingFromUser = async(req, res) => {
     return res.sendStatus(404);
   }
   user.bookings.pull(booking._id);
-  booking.user = null;
+  booking.user = '';
   await booking.save();
   await user.save();
   return res.status(200).json(booking);
