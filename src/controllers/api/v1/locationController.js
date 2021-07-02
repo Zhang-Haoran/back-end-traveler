@@ -4,6 +4,7 @@ const Tour = require('../../../models/tour/tour')
 exports.createLocation = async (req, res) => {
   try {
     const newLocation = await Location.create(req.body);
+    console.log(newLocation)
     res.status(201).json({
       status: 'success',
       data: {

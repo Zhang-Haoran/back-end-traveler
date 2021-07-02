@@ -1,5 +1,5 @@
 const {Schema, model} = require('mongoose');
-const city = require('../utils/city');
+const cityTemplate = require('../utils/city');
 
 const locationSchema = new Schema({
   city: {
@@ -21,8 +21,8 @@ const locationSchema = new Schema({
 locationSchema.pre('save', async function (next) {
   this.city = await this.city.replace(/ +/g, '');
   // Try to match city in database after input validation
-  for (let i = 0; i < city.length; i++) {
-    if (this.city === city[i]) {
+  for (let i = 0; i < cityTemplate.length; i++) {
+    if (this.city === cityTemplate[i]) {
       return next();
     }
   }

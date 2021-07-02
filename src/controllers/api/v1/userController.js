@@ -65,7 +65,7 @@ exports.updateUser = async (req, res) => {
   const user = await User.findByIdAndUpdate(
     id,
     { email, firstName, lastName, dateOfBirth, password, role },
-    { new: true },
+    { new: true, runValidators: true},
   ).exec();
   if (!user) {
     return res.status(404).send('No record found with that user');
