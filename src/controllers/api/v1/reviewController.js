@@ -18,7 +18,8 @@ exports.getAllReviews = async (req, res) => {
 
 exports.getReview = async (req, res) => {
   const { id } = req.params;
-  const review = await Review.findById(id).exec();
+  const review = await Review.findById(id)
+  .populate('user').populate('tour').exec();
   if (!review) {
     return res.sendStatus(404);
   }

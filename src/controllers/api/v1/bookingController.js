@@ -13,7 +13,8 @@ exports.createBooking = async (req, res) => {
 
 exports.getBooking = async (req, res) => {
   const { id } = req.params;
-  const booking = await Booking.findById(id).exec();
+  const booking = await Booking.findById(id)
+  .populate('tour').populate('user').exec();
   if (!booking) {
     return res.sendStatus(404).json('No document found with that ID');
   }

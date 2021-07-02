@@ -15,7 +15,8 @@ exports.createAvailability = async (req, res) => {
 // GET one availability
 exports.getAvailability = async (req, res) => {
   const {id} = req.params;
-  const availability = await Availability.findById(id).exec();
+  const availability = await Availability.findById(id)
+  .populate('tour').exec();
   if(!availability){
     return res.sendStatus(404);
   }
@@ -23,8 +24,14 @@ exports.getAvailability = async (req, res) => {
 };
 
 // GET all availability
+<<<<<<< HEAD:src/controllers/api/v1/tours/avaController.js
 exports.getAllAvailabilities = async (req, res) => {
   const availability = await Availability.find().exec();
+=======
+exports.index = async (req, res) => {
+  const availability = await Availability.find()
+  .populate('tour').exec();
+>>>>>>> 0fde00c70dbd88eb998b3ca0d909b10e316aadff:src/controllers/api/v1/tours/availabilities.js
   return res.json(availability);
 };
 

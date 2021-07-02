@@ -16,6 +16,5 @@ router.use('/tours', tourRoute);
 router.use('/availabilities', availabilityRoute);
 router.use('/reviews', reviewRoute);
 router.use('/bookings', bookingsRoute);
-router.use('/location', locationRoute);
-
+router.use('/locations', locationRoute);
 module.exports = router;

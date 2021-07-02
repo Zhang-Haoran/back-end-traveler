@@ -1,6 +1,8 @@
 const moment = require('moment');
 const Availability = require('../../../../models/tour/availability');
 const Tour = require('../../../../models/tour/tour');
+const Booking = require('../../../../models/booking');
+const Review = require('../../../../models/review');
 
 // PUT one tour
 exports.updateTour = async (req, res) => {
@@ -59,7 +61,9 @@ exports.createTour = async (req, res) => {
 // GET one tour
 exports.getTour = async (req, res) => {
   const { id } = req.params;
-  const tour = await Tour.findById(id).exec();
+  const tour = await Tour.findById(id)
+  .populate('availability').populate('bookings')
+  .populate('reviews').populate('city').exec();
   if (!tour) {
     return res.sendStatus(404);
   }
@@ -67,8 +71,15 @@ exports.getTour = async (req, res) => {
 };
 
 // GET all tours
+<<<<<<< HEAD:src/controllers/api/v1/tours/tourController.js
 exports.getAllTours = async (req, res) => {
   const tour = await Tour.find().exec();
+=======
+exports.index = async (req, res) => {
+  const tour = await Tour.find()
+  .populate('availability').populate('bookings')
+  .populate('reviews').populate('city').exec();
+>>>>>>> 0fde00c70dbd88eb998b3ca0d909b10e316aadff:src/controllers/api/v1/tours/tours.js
   return res.json(tour);
 };
 
@@ -101,4 +112,62 @@ exports.deleteAvailabilityFromTour = async (req, res) => {
   return res.status(200).json(tour);
 }
 
+<<<<<<< HEAD:src/controllers/api/v1/tours/tourController.js
 // city, title, subtitle, introduction, highlights, included, itinerary, price, startDate, endDate
+=======
+exports.addBookingToTour = async(req, res) => {
+  const {tourId, bookingId} = req.params;
+  const tour = await Tour.findById(tourId).exec();
+  const booking = await Booking.findById(bookingId).exec();
+  if (!tour || !booking) {
+    return res.sendStatus(404);
+  }
+  tour.bookings.addToSet(booking._id);
+  booking.tour = tour._id;
+  await booking.save();
+  await tour.save();
+  return res.status(200).json(tour);
+}
+
+exports.deleteBookingFromTour = async(req, res) => {
+  const {tourId, bookingId} = req.params;
+  const tour = await Tour.findById(tourId).exec();
+  const booking = await Booking.findById(bookingId).exec();
+  if (!tour || !booking) {
+    return res.sendStatus(404);
+  }
+  tour.bookings.pull(booking._id);
+  booking.tour = null;
+  await booking.save();
+  await tour.save();
+  return res.status(200).json(tour);
+}
+
+exports.addReviewToTour = async(req, res) => {
+  const {tourId, reviewId} = req.params;
+  const tour = await Tour.findById(tourId).exec();
+  const review = await Review.findById(reviewId).exec();
+  if (!tour || !review) {
+    return res.sendStatus(404);
+  }
+  tour.reviews.addToSet(review._id);
+  review.tour.addToSet(tour._id);
+  await review.save();
+  await tour.save();
+  return res.status(200).json(tour);
+}
+
+exports.deleteReviewFromTour = async(req, res) => {
+  const {tourId, reviewId} = req.params;
+  const tour = await Tour.findById(tourId).exec();
+  const review = await Review.findById(reviewId).exec();
+  if (!tour || !review) {
+    return res.sendStatus(404);
+  }
+  tour.reviews.pull(review._id);
+  review.tour.pull(tour._id);
+  await review.save();
+  await tour.save();
+  return res.status(200).json(tour);
+}
+>>>>>>> 0fde00c70dbd88eb998b3ca0d909b10e316aadff:src/controllers/api/v1/tours/tours.js
