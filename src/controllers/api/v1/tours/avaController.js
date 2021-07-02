@@ -24,14 +24,8 @@ exports.getAvailability = async (req, res) => {
 };
 
 // GET all availability
-<<<<<<< HEAD:src/controllers/api/v1/tours/avaController.js
 exports.getAllAvailabilities = async (req, res) => {
   const availability = await Availability.find().exec();
-=======
-exports.index = async (req, res) => {
-  const availability = await Availability.find()
-  .populate('tour').exec();
->>>>>>> 0fde00c70dbd88eb998b3ca0d909b10e316aadff:src/controllers/api/v1/tours/availabilities.js
   return res.json(availability);
 };
 

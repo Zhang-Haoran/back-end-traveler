@@ -71,15 +71,8 @@ exports.getTour = async (req, res) => {
 };
 
 // GET all tours
-<<<<<<< HEAD:src/controllers/api/v1/tours/tourController.js
 exports.getAllTours = async (req, res) => {
   const tour = await Tour.find().exec();
-=======
-exports.index = async (req, res) => {
-  const tour = await Tour.find()
-  .populate('availability').populate('bookings')
-  .populate('reviews').populate('city').exec();
->>>>>>> 0fde00c70dbd88eb998b3ca0d909b10e316aadff:src/controllers/api/v1/tours/tours.js
   return res.json(tour);
 };
 
@@ -112,9 +105,6 @@ exports.deleteAvailabilityFromTour = async (req, res) => {
   return res.status(200).json(tour);
 }
 
-<<<<<<< HEAD:src/controllers/api/v1/tours/tourController.js
-// city, title, subtitle, introduction, highlights, included, itinerary, price, startDate, endDate
-=======
 exports.addBookingToTour = async(req, res) => {
   const {tourId, bookingId} = req.params;
   const tour = await Tour.findById(tourId).exec();
@@ -170,4 +160,3 @@ exports.deleteReviewFromTour = async(req, res) => {
   await tour.save();
   return res.status(200).json(tour);
 }
->>>>>>> 0fde00c70dbd88eb998b3ca0d909b10e316aadff:src/controllers/api/v1/tours/tours.js
