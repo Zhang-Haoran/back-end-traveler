@@ -1,5 +1,5 @@
-const { Schema , model } = require('mongoose');
-const city = require('../city');
+const mongoose = require('mongoose');
+const city = require('../utils/city');
 
 const locationSchema = new Schema({
   city: {
