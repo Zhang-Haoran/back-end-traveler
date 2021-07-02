@@ -6,8 +6,8 @@ const tourSchema = new Schema({
   // Here needs to check location collection
   // Relate to location
   city: {
-    type: String,
-    ref: 'City',
+    type: Schema.Types.String,
+    ref: 'Location',
   },
 
   title: {
@@ -74,8 +74,7 @@ const tourSchema = new Schema({
     required: true,
     validate: {
       validator: (date) =>
-        moment(date, 'DD/MM/YYYY', true).isValid() &&
-        moment(date, 'DD/MM/YYYY').isSameOrAfter(moment()),
+        moment(date, 'DD/MM/YYYY', true).isValid(),
       msg: 'Invalid Date Format',
     },
   },

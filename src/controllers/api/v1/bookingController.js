@@ -1,6 +1,6 @@
 const Booking = require('../../../models/booking');
 
-exports.store = async (req, res) => {
+exports.createBooking = async (req, res) => {
   const { paid, price } = req.body;
   const booking = new Booking({ paid, price });
   try {
@@ -11,7 +11,7 @@ exports.store = async (req, res) => {
   }
 }
 
-exports.show = async (req, res) => {
+exports.getBooking = async (req, res) => {
   const { id } = req.params;
   const booking = await Booking.findById(id)
   .populate('tour').populate('user').exec();
@@ -30,9 +30,8 @@ exports.show = async (req, res) => {
   }
 }
 
-exports.index = async(req, res) => {
-  const bookings = await Booking.find()
-  .populate('tour').populate('user').exec();
+exports.getAllBookings = async (req, res) => {
+  const bookings = await Booking.find().exec();
   try {
     res.status(200).json({
       status: 'success',
@@ -45,7 +44,7 @@ exports.index = async(req, res) => {
   }
 }
 
-exports.update = async(req, res) => {
+exports.updateBooking = async (req, res) => {
   const { id } = req.params;
   const { paid, price } = req.body;
   const booking = await Booking.findByIdAndUpdate(id, { paid, price }, { new: true }).exec();
@@ -64,7 +63,7 @@ exports.update = async(req, res) => {
   }
 }
 
-exports.destroy = async(req, res) => {
+exports.deleteBookinig = async (req, res) => {
   const { id } = req.params;
   const booking = await Booking.findByIdAndDelete(id).exec();
   if (!booking) {
@@ -81,3 +80,4 @@ exports.destroy = async(req, res) => {
     res.status(400).send(e);
   }
 }
+
