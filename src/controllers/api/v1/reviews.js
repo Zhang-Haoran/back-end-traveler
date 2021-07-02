@@ -1,20 +1,22 @@
 const Review = require('../../../models/review');
 
-async function index(req, res) {
-  const reviews = await Review.find().exec();
+exports.index = async (req, res) => {
+  const reviews = await Review.find()
+  .populate('user').populate('tour').exec();
   return res.json(reviews);
 }
 
-async function show(req, res) {
+exports.show = async (req, res) => {
   const { id } = req.params;
-  const review = await Review.findById(id).exec();
+  const review = await Review.findById(id)
+  .populate('user').populate('tour').exec();
   if (!review) {
     return res.sendStatus(404);
   }
   return res.json(review);
 }
 
-async function update(req, res) {
+exports.update = async (req, res) => {
   const { id } = req.params;
   const { rating, comment } = req.body;
   const review = await Review.findByIdAndUpdate(
@@ -33,7 +35,7 @@ async function update(req, res) {
   return res.json(review);
 }
 
-async function destroy(req, res) {
+exports.destroy = async (req, res) => {
   const { id } = req.params;
   const review = await Review.findByIdAndDelete(id).exec();
   if (!review) {
@@ -42,7 +44,7 @@ async function destroy(req, res) {
   return res.status(204).send(review);
 }
 
-async function store(req, res) {
+exports.store = async (req, res) => {
   const { rating, comment } = req.body;
   const review = new Review({ rating, comment });
   try {
@@ -52,11 +54,3 @@ async function store(req, res) {
     res.status(400).send(e);
   }
 }
-
-module.exports = {
-  index,
-  show,
-  destroy,
-  store,
-  update,
-};

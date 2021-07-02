@@ -89,15 +89,18 @@ const tourSchema = new Schema({
       msg: 'Invalid Date Format',
     },
   },
-
-  // Here needs to check user collection
-  // Relate to users
   bookings: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Booking',
     },
-  ], // relate to booking
+  ],
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Review',
+    },
+  ],
 });
 
 module.exports = model('Tour', tourSchema);

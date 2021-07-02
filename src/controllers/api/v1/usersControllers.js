@@ -1,4 +1,6 @@
 const User = require('../../../models/user');
+const Booking = require('../../../models/booking');
+const Review = require('../../../models/review')
 const { generateToken } = require('../../../utils/auth');
 
 // PUT one user
@@ -66,7 +68,8 @@ exports.store = async (req, res) => {
 // GET one user
 exports.show = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById(id).exec();
+  const user = await User.findById(id)
+  .populate('bookings').populate('reviews').exec();
   if (!user) {
     return res.status(404).send('No record found with that user');
   }
@@ -79,10 +82,67 @@ exports.show = async (req, res) => {
 
 // GET all users
 exports.index = async (req, res) => {
-  const users = await User.find().exec();
+  const users = await User.find()
+  .populate('bookings').populate('reviews').exec();
   try {
     res.status(200).json(users);
   } catch (e) {
     res.status(400).send(e);
   }
 };
+
+exports.addBookingToUser = async(req, res) => {
+  const {userId, bookingId} = req.params;
+  const user = await User.findById(userId).exec();
+  const booking = await Booking.findById(bookingId).exec();
+  if (!user || !booking) {
+    return res.sendStatus(404);
+  }
+  user.bookings.addToSet(booking._id);
+  booking.user = user._id;
+  await booking.save();
+  await user.save();
+  return res.status(200).json(booking);
+}
+
+exports.deleteBookingFromUser = async(req, res) => {
+  const {userId, bookingId} = req.params;
+  const user = await User.findById(userId).exec();
+  const booking = await Booking.findById(bookingId).exec();
+  if (!user || !booking) {
+    return res.sendStatus(404);
+  }
+  user.bookings.pull(booking._id);
+  booking.user = '';
+  await booking.save();
+  await user.save();
+  return res.status(200).json(booking);
+}
+
+exports.addReviewToUser = async(req, res) => {
+  const {userId, reviewId} = req.params;
+  const user = await User.findById(userId).exec();
+  const review = await Review.findById(reviewId).exec();
+  if (!user || !review) {
+    return res.sendStatus(404);
+  }
+  user.reviews.addToSet(review._id);
+  review.user.addToSet(user._id);
+  await review.save();
+  await user.save();
+  return res.status(200).json(review);
+}
+
+exports.deleteReviewFromUser = async(req, res) => {
+  const {userId, reviewId} = req.params;
+  const user = await User.findById(userId).exec();
+  const review = await Review.findById(reviewId).exec();
+  if (!user || !review) {
+    return res.sendStatus(404);
+  }
+  user.reviews.pull(review._id);
+  review.user.pull(user._id);
+  await review.save();
+  await user.save();
+  return res.status(200).json(review);
+}
