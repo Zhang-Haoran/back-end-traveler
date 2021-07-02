@@ -25,7 +25,8 @@ exports.getAvailability = async (req, res) => {
 
 // GET all availability
 exports.getAllAvailabilities = async (req, res) => {
-  const availability = await Availability.find().exec();
+  const availability = await Availability.find()
+  .populate('tour').exec();
   return res.json(availability);
 };
 

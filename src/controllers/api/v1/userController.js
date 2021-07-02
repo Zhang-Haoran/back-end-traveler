@@ -33,7 +33,8 @@ exports.createUser = async (req, res) => {
 
 // GET all users
 exports.getAllUsers = async (req, res) => {
-  const users = await User.find().exec();
+  const users = await User.find()
+  .populate('bookings').populate('reviews').exec();
   try {
     res.status(200).json(users);
   } catch (e) {

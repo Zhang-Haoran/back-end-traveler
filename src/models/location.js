@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose');
 const city = require('../utils/city');
 
 const locationSchema = new Schema({

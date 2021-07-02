@@ -12,7 +12,8 @@ exports.createReview = async (req, res) => {
 }
 
 exports.getAllReviews = async (req, res) => {
-  const reviews = await Review.find().exec();
+  const reviews = await Review.find()
+  .populate('user').populate('tour').exec();
   return res.json(reviews);
 }
 

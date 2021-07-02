@@ -105,7 +105,6 @@ exports.addTourToLocation = async (req, res) => {
   const {locationId, tourId } = req.params
   const tour = await Tour.findById(tourId).exec();
   const location = await Location.findById(locationId).exec();
-  console.log(location.city)
   if (!tour || !location) {
     return res.sendStatus(404);
   }
@@ -123,8 +122,8 @@ exports.deleteTourFromLocation = async (req, res) => {
   if (!tour || !location) {
     return res.sendStatus(404);
   }
-  tour.locations.pull(location.city);
-  location.tours.pull(tour.city);
+  tour.city = null;
+  location.tours.pull(tour.title);
   await tour.save();
   await location.save();
   return res.status(200).json(location);
