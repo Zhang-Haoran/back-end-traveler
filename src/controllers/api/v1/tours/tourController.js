@@ -63,7 +63,7 @@ exports.getTour = async (req, res) => {
   const { id } = req.params;
   const tour = await Tour.findById(id)
   .populate('availability').populate('bookings')
-  .populate('reviews').populate('city').exec();
+  .populate('reviews').exec();
   if (!tour) {
     return res.sendStatus(404);
   }
@@ -72,7 +72,9 @@ exports.getTour = async (req, res) => {
 
 // GET all tours
 exports.getAllTours = async (req, res) => {
-  const tour = await Tour.find().exec();
+  const tour = await Tour.find()
+  .populate('availability').populate('bookings')
+  .populate('reviews').exec();
   return res.json(tour);
 };
 

@@ -2,18 +2,13 @@ const Location = require('../../../models/location');
 const Tour = require('../../../models/tour/tour')
 
 exports.createLocation = async (req, res) => {
+  const {city, state} = req.body;
+  const location = Location({city, state});
   try {
-    const newLocation = await Location.create(req.body);
-    res.status(201).json({
-      status: 'success',
-      data: {
-        location: newLocation,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: 'Error occured',
-    });
+    await location.save();
+    res.status(201).send({ location });
+  } catch (e) {
+    res.status(400).send(e);
   }
 };
 
@@ -105,7 +100,6 @@ exports.addTourToLocation = async (req, res) => {
   const {locationId, tourId } = req.params
   const tour = await Tour.findById(tourId).exec();
   const location = await Location.findById(locationId).exec();
-  console.log(location.city)
   if (!tour || !location) {
     return res.sendStatus(404);
   }
@@ -123,8 +117,8 @@ exports.deleteTourFromLocation = async (req, res) => {
   if (!tour || !location) {
     return res.sendStatus(404);
   }
-  tour.locations.pull(location.city);
-  location.tours.pull(tour.city);
+  tour.city = null;
+  location.tours.pull(tour.title);
   await tour.save();
   await location.save();
   return res.status(200).json(location);

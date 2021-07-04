@@ -33,7 +33,8 @@ exports.createUser = async (req, res) => {
 
 // GET all users
 exports.getAllUsers = async (req, res) => {
-  const users = await User.find().exec();
+  const users = await User.find()
+  .populate('bookings').populate('reviews').exec();
   try {
     res.status(200).json(users);
   } catch (e) {
@@ -64,7 +65,7 @@ exports.updateUser = async (req, res) => {
   const user = await User.findByIdAndUpdate(
     id,
     { email, firstName, lastName, dateOfBirth, password, role },
-    { new: true },
+    { new: true, runValidators: true},
   ).exec();
   if (!user) {
     return res.status(404).send('No record found with that user');

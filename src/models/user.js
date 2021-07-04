@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
+const moment = require('moment');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new Schema(
@@ -30,10 +31,16 @@ const userSchema = new Schema(
     dateOfBirth: {
       type: String,
       required: [true, 'please tell us your date of birth'],
+      validate: {
+        validator: (date) =>
+          moment(date, 'DD/MM/YYYY').isSameOrBefore(moment()),
+        msg: 'Invalid Date',
+      },
     },
     role: {
       type: String,
       enum: ['user', 'admin'],
+      required: true,
       default: 'user',
     },
     password: {

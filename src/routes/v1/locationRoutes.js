@@ -9,7 +9,7 @@ router.post('/', locationController.createLocation);
 router.patch('/:id', locationController.updateLocation);
 router.delete('/:id', locationController.deleteLocation);
 
-router.post('/:locationId&:tourId', locationController.addTourToLocation);
-router.delete('/:locationId&:tourId', locationController.deleteTourFromLocation)
+router.post('/:locationId/tours/:tourId', locationController.addTourToLocation);
+router.delete('/:locationId/tours/:tourId', locationController.deleteTourFromLocation)
 
 module.exports = router;
