@@ -6,7 +6,7 @@ const locationController = require('../../controllers/api/v1/locationController'
 router.get('/', locationController.getAllLocations);
 router.get('/:id', locationController.getLocation);
 router.post('/', locationController.createLocation);
-router.put('/:id', locationController.updateLocation);
+router.patch('/:id', locationController.updateLocation);
 router.delete('/:id', locationController.deleteLocation);
 
 router.post('/:locationId/tours/:tourId', locationController.addTourToLocation);

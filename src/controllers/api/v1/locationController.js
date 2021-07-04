@@ -2,19 +2,13 @@ const Location = require('../../../models/location');
 const Tour = require('../../../models/tour/tour')
 
 exports.createLocation = async (req, res) => {
+  const {city, state} = req.body;
+  const location = Location({city, state});
   try {
-    const newLocation = await Location.create(req.body);
-    console.log(newLocation)
-    res.status(201).json({
-      status: 'success',
-      data: {
-        location: newLocation,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: 'Error occured',
-    });
+    await location.save();
+    res.status(201).send({ location });
+  } catch (e) {
+    res.status(400).send(e);
   }
 };
 

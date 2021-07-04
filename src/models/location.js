@@ -9,6 +9,12 @@ const locationSchema = new Schema({
     unique: true,
     trim: true,
   },
+  state: {
+    type: String,
+    required: [true, 'You must enter a valid state name'],
+    uppercase: true,
+    trim: true,
+  },
   tours: [
     {
       type: Schema.Types.String,
@@ -18,6 +24,7 @@ const locationSchema = new Schema({
 });
 
 // Delete space in word
+// Issues on Gold Coast-like works
 locationSchema.pre('save', async function (next) {
   this.city = await this.city.replace(/ +/g, '');
   // Try to match city in database after input validation

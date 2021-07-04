@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', avaController.getAllAvailabilities);
 router.get('/:id', avaController.getAvailability);
 router.post('/', avaController.createAvailability);
-router.put('/:id', avaController.updateAvailability);
+router.patch('/:id', avaController.updateAvailability);
 router.delete('/:id', avaController.deleteAvailability);
 
 module.exports = router;
