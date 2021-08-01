@@ -46,13 +46,17 @@ exports.getUserById = async (req, res) => {
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
   const { email, firstName, lastName, dateOfBirth, password } = req.body;
-  const user = await User.findByIdAndUpdate(id, {
-    email,
-    firstName,
-    lastName,
-    dateOfBirth,
-    password,
-  }).exec();
+  const user = await User.findByIdAndUpdate(
+    id,
+    {
+      email,
+      firstName,
+      lastName,
+      dateOfBirth,
+      password,
+    },
+    { new: true },
+  ).exec();
   if (!user) return res.status(404).send('No record found with that user');
   try {
     res.status(200).json(user);
