@@ -21,7 +21,7 @@ exports.postUser = async (req, res) => {
 };
 
 // Get Users
-exports.getUsers = async (res) => {
+exports.getUsers = async (req, res) => {
   const users = await User.find().exec();
   try {
     res.status(200).json(users);
