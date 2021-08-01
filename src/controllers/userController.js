@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../models/userModel");
 // Post User
 exports.postUser = async (req,res) => {
     const {email, firstName, lastName, dateOfBirth, password} = req.body;
