@@ -24,5 +24,10 @@
     "no-console": ["off"],
     "consistent-return": ["off"],
     "no-underscore-dangle": ["error", { "allow": ["_id"] }]
+  },
+  "settings": {
+    "react": {
+      "version": "999.999.999"
+    }
   }
 }
