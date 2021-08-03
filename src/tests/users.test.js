@@ -14,6 +14,7 @@ describe('/api/v1/users', () => {
       dateOfBirth: '02/08/2021',
       password: '123456',
     });
+    await user.hashPassword();
     await user.save();
   });
 

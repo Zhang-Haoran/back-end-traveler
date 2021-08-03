@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 const moment = require('moment');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new Schema({
   _id: {
@@ -40,5 +41,13 @@ const userSchema = new Schema({
     select: false,
   },
 });
+
+userSchema.methods.hashPassword = async function () {
+  this.password = await bcrypt.hash(this.password, 12);
+};
+
+userSchema.methods.validatePassword = async function () {
+  return bcrypt.compare(password, this.password);
+};
 
 module.exports = model('User', userSchema);

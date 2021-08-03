@@ -20,6 +20,7 @@ exports.postUser = async (req, res) => {
     dateOfBirth,
     password,
   });
+  await user.hashPassword();
   try {
     await user.save();
     res.status(201).send({ email });
