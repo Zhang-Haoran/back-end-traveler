@@ -53,25 +53,7 @@ exports.getUserById = async (req, res) => {
 // Update user by id
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
-  const isDefined =
-    req.body.email &&
-    req.body.firstName &&
-    req.body.lastName &&
-    req.body.dateOfBirth &&
-    req.body.password;
-  if (!isDefined) return res.status(400).send({ error: 'request body invalid' });
-  const { email, firstName, lastName, dateOfBirth, password } = req.body;
-  const user = await User.findByIdAndUpdate(
-    id,
-    {
-      email,
-      firstName,
-      lastName,
-      dateOfBirth,
-      password,
-    },
-    { new: true },
-  ).exec();
+  const user = await User.findByIdAndUpdate(id, req.body, { new: true }).exec();
   if (!user) return res.status(404).send({ error: 'No record found with that user' });
   try {
     res.status(200).json(user);
