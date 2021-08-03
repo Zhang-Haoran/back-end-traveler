@@ -1,14 +1,13 @@
 const User = require('../models/userModel');
 // Post User
 exports.postUser = async (req, res) => {
-  if (
-    !req.body.email ||
-    !req.body.firstName ||
-    !req.body.lastName ||
-    !req.body.dateOfBirth ||
-    !req.body.password
-  )
-    return res.status(400).send({ error: 'request body invalid' });
+  const isDefined =
+    req.body.email &&
+    req.body.firstName &&
+    req.body.lastName &&
+    req.body.dateOfBirth &&
+    req.body.password;
+  if (!isDefined) return res.status(400).send({ error: 'request body invalid' });
   const { email, firstName, lastName, dateOfBirth, password } = req.body;
   const existUser = await User.findById(email).exec();
   if (existUser) return res.status(409).send({ error: 'This email already exist' });
@@ -54,6 +53,13 @@ exports.getUserById = async (req, res) => {
 // Update user by id
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
+  const isDefined =
+    req.body.email &&
+    req.body.firstName &&
+    req.body.lastName &&
+    req.body.dateOfBirth &&
+    req.body.password;
+  if (!isDefined) return res.status(400).send({ error: 'request body invalid' });
   const { email, firstName, lastName, dateOfBirth, password } = req.body;
   const user = await User.findByIdAndUpdate(
     id,
