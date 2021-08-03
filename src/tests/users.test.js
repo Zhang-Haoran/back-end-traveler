@@ -1,7 +1,7 @@
 const supertest = require('supertest');
+const mongoose = require('mongoose');
 const User = require('../models/userModel');
 const app = require('../app');
-const mongoose = require('mongoose');
 
 const request = supertest(app);
 // User router
@@ -72,7 +72,7 @@ describe('/api/v1/users', () => {
       expect(res.statusCode).toBe(400);
     });
 
-    //Invalid date of birth
+    // Invalid date of birth
     it('should return 400 if date of birth is later than today', async () => {
       const res = await request.post('/api/v1/users').send({
         email: 'DOB@gmail.com',
@@ -84,7 +84,7 @@ describe('/api/v1/users', () => {
       expect(res.statusCode).toBe(400);
     });
 
-    //Invalid email format
+    // Invalid email format
     it('should return 400 if email format is invalid', async () => {
       const res = await request.post('/api/v1/users').send({
         email: 'gmail.com',
@@ -97,7 +97,7 @@ describe('/api/v1/users', () => {
     });
   });
 
-  //Get Users
+  // Get Users
   describe('GET', () => {
     // Get all users
     it('should return 200 if get all users successfully', async () => {

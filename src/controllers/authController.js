@@ -1,7 +1,7 @@
 const { generateToken } = require('../utils/auth');
 const User = require('../models/userModel');
 
-//User login
+// User login
 exports.login = async (req, res) => {
   // Check if email or password is empty
   const isDefined = req.body.email && req.body.password;

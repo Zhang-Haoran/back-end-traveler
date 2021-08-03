@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose');
 const moment = require('moment');
 const Joi = require('joi');
-const { number } = require('joi');
 
 const tourSchema = new Schema({
   state: {
