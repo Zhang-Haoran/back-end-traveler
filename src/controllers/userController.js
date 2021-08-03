@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+const { generateToken } = require('../utils/auth');
 // Post User
 exports.postUser = async (req, res) => {
   const isDefined =
@@ -23,7 +24,8 @@ exports.postUser = async (req, res) => {
   await user.hashPassword();
   try {
     await user.save();
-    res.status(201).send({ email });
+    const token = generateToken(email);
+    res.status(201).send({ token, email });
   } catch (error) {
     res.status(400).send(error);
   }

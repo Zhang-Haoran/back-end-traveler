@@ -46,7 +46,7 @@ userSchema.methods.hashPassword = async function () {
   this.password = await bcrypt.hash(this.password, 12);
 };
 
-userSchema.methods.validatePassword = async function () {
+userSchema.methods.validatePassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
