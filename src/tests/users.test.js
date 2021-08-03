@@ -4,7 +4,9 @@ const app = require('../app');
 const mongoose = require('mongoose');
 
 const request = supertest(app);
+// User router
 describe('/api/v1/users', () => {
+  // Setup testing & adding default test user
   beforeAll(async () => {
     await User.deleteMany({});
     const user = new User({
@@ -17,7 +19,7 @@ describe('/api/v1/users', () => {
     await user.hashPassword();
     await user.save();
   });
-
+  // Finished testing & delete testing data
   afterAll(async () => {
     await User.deleteMany({});
     await mongoose.disconnect();
