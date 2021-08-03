@@ -19,10 +19,6 @@ const bookingSchema = new Schema({
       message: 'Price need more than 0',
     },
   },
-  paid: {
-    type: Boolean,
-    default: false,
-  },
   timestamps: true,
 });
 module.exports = model('Booking', bookingSchema);
