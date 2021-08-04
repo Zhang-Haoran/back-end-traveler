@@ -1,6 +1,5 @@
+const moment = require('moment');
 const Tour = require('../models/tourModel');
-const Booking = require('../models/bookingModel');
-const Review = require('../models/reviewModel');
 
 // Post tour
 exports.postTour = async (req, res) => {
