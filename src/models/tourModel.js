@@ -48,6 +48,9 @@ const tourSchema = new Schema({
       msg: 'Please input correct price',
     },
   },
+  image: {
+    type: String,
+  },
   map: {
     type: {
       type: String,
